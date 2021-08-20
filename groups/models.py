@@ -22,6 +22,7 @@ class Expense(models.Model):
     created_by = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    comment = models.TextField(max_length=250, null=True, blank=True)
 
 
 class GroupUser(models.Model):
