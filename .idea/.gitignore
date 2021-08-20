@@ -1,0 +1,17 @@
+# Default ignored files
+/workspace.xml
+
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+
+# If you are using PyCharm # 
+.idea
+
+# safety key
+expense_share/dajango_key.py
+
