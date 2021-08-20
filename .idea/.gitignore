@@ -10,8 +10,11 @@ db.sqlite3
 media
 
 # If you are using PyCharm # 
-.idea
+.idea/*
 
 # safety key
-expense_share/dajango_key.py
+/expense_share/django_key.py
+
+# cache
+*/__pycache__/*
 
