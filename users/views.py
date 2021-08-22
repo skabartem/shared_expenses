@@ -1,12 +1,9 @@
 from django.views import View
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from users.forms import SignUpForm
-
-
-class ProfileView(View):
-    template_name = 'users/details.html'
+from django.views.generic import CreateView, UpdateView
+from users.forms import SignUpForm, ProfileForm
+from django.contrib.auth.models import User
 
 
 class UserLogin(LoginView):
@@ -15,8 +12,16 @@ class UserLogin(LoginView):
 
 class SignUp(CreateView):
     form_class = SignUpForm
-    success_url = reverse_lazy('login')
+    # success_url = reverse_lazy('login')
     template_name = 'users/register.html'
+
+
+# Edit Profile View
+class ProfileView(UpdateView):
+    model = User
+    form_class = ProfileForm
+    # success_url = reverse_lazy('login')
+    template_name = 'users/details.html'
 
 
 class UserLogout(LogoutView):
