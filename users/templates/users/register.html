@@ -1,7 +1,8 @@
-<form method="POST" action="{% url 'login-user' %}">
-
+<h2>Sign Page</h2>
+<form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-
-  <input type="submit" name="sumbit">
+    <button type="submit">Register</button>
+    <br><br>
+    <a href="{% url 'home' %}">Home</a>
 </form>
