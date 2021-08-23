@@ -14,5 +14,5 @@ class Profile(models.Model):
     groups = models.ManyToManyField('groups.Group', blank=True, through='groups.GroupUser')
 
     def __str__(self):
-        return self.full_name
+        return self.username
 
