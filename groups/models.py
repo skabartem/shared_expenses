@@ -27,6 +27,9 @@ class Expense(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     comment = models.TextField(max_length=250, null=True, blank=True)
 
+    def __str__(self):
+        return self.title
+
 
 class GroupUser(models.Model):
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, unique=True)
@@ -34,4 +37,7 @@ class GroupUser(models.Model):
     profile = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, null=True, on_delete=models.CASCADE)
     created_expenses = models.ForeignKey(Expense, null=True, blank=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.group} | {self.profile}'
 
