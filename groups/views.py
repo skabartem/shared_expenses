@@ -16,9 +16,9 @@ class GroupDetailView(DetailView):
 
 class GroupsListView(ListView):
     model = Group
-    template_name = 'groups/my-groups.html'
+    template_name = 'groups/user-groups.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user_groups'] = Group.objects.all()
+        context['user_groups'] = Group.objects.filter(profile=self.request.user.profile)
         return context
