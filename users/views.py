@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 from users.forms import SignUpForm, ProfileForm
 from django.contrib.auth.models import User
+from .models import Profile
 
 
 class UserLogin(LoginView):
@@ -18,9 +19,9 @@ class SignUp(CreateView):
 
 # Edit Profile View
 class ProfileView(UpdateView):
-    model = User
+    model = Profile
     form_class = ProfileForm
-    # success_url = reverse_lazy('login')
+    success_url = reverse_lazy('login')
     template_name = 'users/details.html'
 
 
