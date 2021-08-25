@@ -1,6 +1,8 @@
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
+
+from django.urls import reverse_lazy
 
 from groups.models import Group, Expense
 
@@ -27,7 +29,7 @@ class GroupsListView(ListView):
 
 class ExpenseCreateView(CreateView):
     model = Expense
-    template_name = 'groups/add-expense.html'
+    template_name = 'groups/expense.html'
 
     fields = [
         'title',
@@ -36,4 +38,23 @@ class ExpenseCreateView(CreateView):
         'split_with',
         'comment'
     ]
+
+    def get_success_url(self):
+        return reverse_lazy('user-groups')
+
+
+class ExpenseUpdateView(UpdateView):
+    model = Expense
+    template_name = 'groups/expense.html'
+
+    fields = [
+        'title',
+        'price',
+        'paid_date',
+        'split_with',
+        'comment'
+    ]
+
+    def get_success_url(self):
+        return reverse_lazy('user-groups')
 
