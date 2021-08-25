@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 from users.forms import SignUpForm, ProfileForm
 from .models import Profile
+from django.contrib.auth import login, logout, authenticate
 
 
 class UserLogin(LoginView):
@@ -19,6 +20,14 @@ class SignUp(CreateView):
     def get_success_url(self):
         return reverse_lazy('login-user')
 
+    def form_valid(self, form):
+        valid = super().form_valid(form)
+
+        # Login the user
+        login(self.request, self.object)
+
+        return valid
+
 
 # Edit Profile View
 class ProfileView(UpdateView):
@@ -28,4 +37,9 @@ class ProfileView(UpdateView):
 
 
 class UserLogout(LogoutView):
-    template_name = 'users/details.html'
+
+    def get(self, request):
+        logout(request)
+
+    def get_success_url(self):
+        return reverse_lazy('login-user')
