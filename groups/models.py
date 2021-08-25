@@ -28,7 +28,7 @@ class Expense(models.Model):
     comment = models.TextField(max_length=250, null=True, blank=True)
 
     def __str__(self):
-        return self.title
+        return f'{self.title} | {self.group}'
 
 
 class GroupUser(models.Model):
