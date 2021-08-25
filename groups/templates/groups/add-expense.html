@@ -1,0 +1,10 @@
+<h2>Add expense form</h2>
+<form method="POST" action="{% url 'add-expense' %}">
+    {% csrf_token %}
+    {% for field in form %}
+        <div>
+            {{field.label}}
+            {{field}}
+        </div>
+    {% endfor %}
+</form>

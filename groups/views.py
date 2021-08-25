@@ -1,7 +1,8 @@
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView
 
-from groups.models import Group
+from groups.models import Group, Expense
 
 
 class GroupDetailView(DetailView):
@@ -22,3 +23,17 @@ class GroupsListView(ListView):
         context = super().get_context_data(**kwargs)
         context['user_groups'] = Group.objects.filter(profile=self.request.user.profile)
         return context
+
+
+class ExpenseCreateView(CreateView):
+    model = Expense
+    template_name = 'groups/add-expense.html'
+
+    fields = [
+        'title',
+        'price',
+        'paid_date',
+        'split_with',
+        'comment'
+    ]
+
