@@ -13,7 +13,7 @@ class GroupDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['test'] = 'test_html'
+        context['group_expenses'] = Expense.objects.filter(group__id=self.kwargs['pk'])
         return context
 
 
@@ -57,4 +57,3 @@ class ExpenseUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('user-groups')
-
