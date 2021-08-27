@@ -13,7 +13,7 @@ class GroupDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['group_expenses'] = Expense.objects.filter(group__id=self.kwargs['pk'])
+        context['group_expenses'] = Expense.objects.filter(group_id=self.kwargs['pk'])
         return context
 
 
