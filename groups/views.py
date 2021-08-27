@@ -64,5 +64,14 @@ class ExpenseUpdateView(UpdateView):
         'comment'
     ]
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        expense = form.save(commit=False)
+        expense.created_by = self.request.user.profile
+        if expense.comment == '':
+            expense.comment = 'test auto UPDATE comment'
+        expense.save()
+        return response
+
     def get_success_url(self):
         return reverse_lazy('user-groups')
