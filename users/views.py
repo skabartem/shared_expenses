@@ -35,6 +35,9 @@ class ProfileView(UpdateView):
     form_class = ProfileForm
     template_name = 'users/details.html'
 
+    def get_success_url(self):
+        return reverse_lazy('user-groups')
+
 
 class UserLogout(LogoutView):
 
