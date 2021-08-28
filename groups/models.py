@@ -15,6 +15,17 @@ class Group(models.Model):
         return self.name
 
 
+class GroupUser(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, unique=True)
+    balance = models.FloatField(null=True)
+    profile = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, null=True, on_delete=models.CASCADE)
+    created_expenses = models.ForeignKey("Expense", null=True, blank=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.group} | {self.profile}'
+
+
 class Expense(models.Model):
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, unique=True)
     title = models.CharField(null=True, max_length=100)
@@ -31,13 +42,9 @@ class Expense(models.Model):
         return f'{self.title} | {self.group}'
 
 
-class GroupUser(models.Model):
+class ExpenseComment(models.Model):
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, unique=True)
-    balance = models.FloatField(null=True)
-    profile = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, null=True, on_delete=models.CASCADE)
-    created_expenses = models.ForeignKey(Expense, null=True, blank=True, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'{self.group} | {self.profile}'
-
+    created_by = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    comment_text = models.TextField(max_length=250, null=True, blank=True)
