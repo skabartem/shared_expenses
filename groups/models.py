@@ -39,7 +39,7 @@ class Expense(models.Model):
     comment = models.ForeignKey("ExpenseComment", on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return f'{self.title} | {self.group}'
+        return f'{self.price} PLN | {self.title} | {self.group}'
 
 
 class ExpenseComment(models.Model):
