@@ -8,7 +8,7 @@
 
 <div>
     {% for user in group_users %}
-        {{user.profile.name}}
+        {{user.profile.full_name}}
         {{user.balance}} PLN
     {% endfor %}
 </div>
