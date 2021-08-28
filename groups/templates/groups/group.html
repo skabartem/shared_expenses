@@ -1,5 +1,14 @@
 <h2>Group</h2>
 
-{% for expense in group_expenses %}
-    <p>{{expense}}</p>
-{% endfor %}
+<div>
+    {% for expense in group_expenses %}
+        <p>{{expense}}</p>
+    {% endfor %}
+</div>
+
+<div>
+    {% for user in group_users %}
+        {{user.profile.name}}
+        {{user.balance}} PLN
+    {% endfor %}
+</div>

@@ -4,7 +4,7 @@ from django.views.generic.edit import CreateView, UpdateView
 
 from django.urls import reverse_lazy
 
-from groups.models import Group, Expense
+from groups.models import Group, Expense, GroupUser
 
 
 class GroupDetailView(DetailView):
@@ -14,6 +14,7 @@ class GroupDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['group_expenses'] = Expense.objects.filter(group_id=self.kwargs['pk'])
+        context['group_users'] = GroupUser.objects.filter(group_id=self.kwargs['pk'])
         return context
 
 
