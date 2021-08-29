@@ -20,7 +20,6 @@ class GroupUser(models.Model):
     balance = models.FloatField(null=True)
     profile = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, null=True, on_delete=models.CASCADE)
-    created_expenses = models.ForeignKey("Expense", null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.group} | {self.profile}'
