@@ -36,7 +36,7 @@ class Expense(models.Model):
     created_by = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    comment = models.ForeignKey("ExpenseComment", on_delete=models.CASCADE, null=True)
+    comment = models.ForeignKey("ExpenseComment", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f'{self.price} PLN | {self.title} | {self.group}'
