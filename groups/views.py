@@ -4,9 +4,13 @@ from django.views.generic.edit import CreateView, UpdateView
 
 from django.urls import reverse_lazy
 
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
 from groups.models import Group, Expense, GroupUser
 
 
+@method_decorator(login_required, name='dispatch')
 class GroupDetailView(DetailView):
     model = Group
     template_name = 'groups/group.html'
@@ -19,6 +23,7 @@ class GroupDetailView(DetailView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
 class GroupsListView(ListView):
     model = Group
     template_name = 'groups/user-groups.html'
@@ -29,6 +34,7 @@ class GroupsListView(ListView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
 class ExpenseCreateView(CreateView):
     model = Expense
     template_name = 'groups/expense.html'
@@ -54,6 +60,7 @@ class ExpenseCreateView(CreateView):
         return reverse_lazy('user-groups')
 
 
+@method_decorator(login_required, name='dispatch')
 class ExpenseUpdateView(UpdateView):
     model = Expense
     template_name = 'groups/expense.html'

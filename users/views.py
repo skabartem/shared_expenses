@@ -3,7 +3,10 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 from users.forms import SignUpForm, ProfileForm
 from .models import Profile
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout
+
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
 class UserLogin(LoginView):
@@ -30,6 +33,7 @@ class SignUp(CreateView):
 
 
 # Edit Profile View
+@method_decorator(login_required, name='dispatch')
 class ProfileView(UpdateView):
     model = Profile
     form_class = ProfileForm
