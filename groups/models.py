@@ -44,7 +44,7 @@ class Expense(models.Model):
 class ExpenseComment(models.Model):
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, unique=True)
     group = models.ForeignKey(Group, null=True, on_delete=models.CASCADE)
-    created_by = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    created_by = models.ForeignKey(GroupUser, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     comment_text = models.TextField(max_length=250, null=True, blank=True)
 
