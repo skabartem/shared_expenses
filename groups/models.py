@@ -35,7 +35,6 @@ class Expense(models.Model):
     created_by = models.ForeignKey(GroupUser, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    comment = models.ForeignKey("ExpenseComment", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f'{self.price} PLN | {self.title} | {self.group}'
@@ -47,6 +46,8 @@ class ExpenseComment(models.Model):
     created_by = models.ForeignKey(GroupUser, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     comment_text = models.TextField(max_length=250, null=True, blank=True)
+
+    expense = models.ForeignKey(Expense, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return f'{self.group} | {self.comment_text}'
