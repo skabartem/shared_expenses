@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-from groups.models import Group, Expense, GroupUser
+from groups.models import Group, GroupUser,Expense, ExpenseComment
 
 
 @method_decorator(login_required, name='dispatch')
@@ -51,8 +51,14 @@ class ExpenseCreateView(CreateView):
         response = super().form_valid(form)
         expense = form.save(commit=False)
         expense.created_by = GroupUser.objects.get(profile=self.request.user.profile)
-        # if expense.comment == '':
-        #     expense.comment = 'test auto comment'
+
+        ExpenseComment.objects.create(
+            group=expense.group,
+            created_by=GroupUser.objects.get(profile=self.request.user.profile),
+            comment_text=expense.comment,
+            expense=expense
+        )
+
         expense.save()
         return response
 
@@ -76,9 +82,15 @@ class ExpenseUpdateView(UpdateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         expense = form.save(commit=False)
-        expense.created_by = self.request.user.profile
-        if expense.comment == '':
-            expense.comment = 'test auto UPDATE comment'
+        expense.created_by = GroupUser.objects.get(profile=self.request.user.profile)
+
+        ExpenseComment.objects.create(
+            group=expense.group,
+            created_by=GroupUser.objects.get(profile=self.request.user.profile),
+            comment_text=expense.comment,
+            expense=expense
+        )
+
         expense.save()
         return response
 
