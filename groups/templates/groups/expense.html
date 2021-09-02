@@ -8,5 +8,11 @@
         </div>
     {% endfor %}
 
+
+    <h3>Expense comments</h3>
+    {% for comment in expense_comments %}
+        <p>{{comment}}</p>
+    {% endfor %}
+
     <button type="submit">Submit</button>
 </form>
