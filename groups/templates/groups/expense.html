@@ -9,10 +9,12 @@
     {% endfor %}
 
 
-    <h3>Expense comments</h3>
-    {% for comment in expense_comments %}
-        <p>{{comment}}</p>
-    {% endfor %}
+    {% if expense_comments %}
+        <h3>Expense comments</h3>
+        {% for comment in expense_comments %}
+            <p>{{comment}}</p>
+        {% endfor %}
+    {% endif %}
 
     <button type="submit">Submit</button>
 </form>
