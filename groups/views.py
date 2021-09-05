@@ -9,6 +9,8 @@ from django.utils.decorators import method_decorator
 
 from groups.models import Group, GroupUser,Expense, ExpenseComment
 
+from django.core.cache import cache
+
 
 @method_decorator(login_required, name='dispatch')
 class GroupDetailView(DetailView):
@@ -20,6 +22,10 @@ class GroupDetailView(DetailView):
         context['group_expenses'] = Expense.objects.filter(group_id=self.kwargs['pk'])
         context['group_users'] = GroupUser.objects.filter(group_id=self.kwargs['pk'])
         context['group_data'] = Group.objects.get(id=self.kwargs['pk'])
+
+        # https://stackoverflow.com/questions/58883570/pass-data-between-different-views-in-django/58912197#58912197
+        # change to REST when learnt
+        cache.set('current_group', context['group_data'])
         return context
 
 
@@ -51,6 +57,7 @@ class ExpenseCreateView(CreateView):
         response = super().form_valid(form)
         expense = form.save(commit=False)
         expense.created_by = GroupUser.objects.get(profile=self.request.user.profile)
+        expense.group = cache.get('current_group')
 
         if expense.comment:
             ExpenseComment.objects.create(
@@ -87,7 +94,7 @@ class ExpenseUpdateView(UpdateView):
 
         if expense.comment:
             ExpenseComment.objects.create(
-                group=expense.group,
+                group=cache.get('current_group'),
                 created_by=GroupUser.objects.get(profile=self.request.user.profile),
                 comment_text=expense.comment,
                 expense=expense
