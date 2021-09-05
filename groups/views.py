@@ -52,12 +52,13 @@ class ExpenseCreateView(CreateView):
         expense = form.save(commit=False)
         expense.created_by = GroupUser.objects.get(profile=self.request.user.profile)
 
-        ExpenseComment.objects.create(
-            group=expense.group,
-            created_by=GroupUser.objects.get(profile=self.request.user.profile),
-            comment_text=expense.comment,
-            expense=expense
-        )
+        if expense.comment:
+            ExpenseComment.objects.create(
+                group=expense.group,
+                created_by=GroupUser.objects.get(profile=self.request.user.profile),
+                comment_text=expense.comment,
+                expense=expense
+            )
 
         expense.save()
         return response
@@ -84,12 +85,13 @@ class ExpenseUpdateView(UpdateView):
         expense = form.save(commit=False)
         expense.created_by = GroupUser.objects.get(profile=self.request.user.profile)
 
-        ExpenseComment.objects.create(
-            group=expense.group,
-            created_by=GroupUser.objects.get(profile=self.request.user.profile),
-            comment_text=expense.comment,
-            expense=expense
-        )
+        if expense.comment:
+            ExpenseComment.objects.create(
+                group=expense.group,
+                created_by=GroupUser.objects.get(profile=self.request.user.profile),
+                comment_text=expense.comment,
+                expense=expense
+            )
 
         expense.save()
         return response
