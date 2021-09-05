@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-from groups.models import Group, GroupUser,Expense, ExpenseComment
+from groups.models import Group, GroupUser, Expense, ExpenseComment
 
 from django.core.cache import cache
 
@@ -71,7 +71,7 @@ class ExpenseCreateView(CreateView):
         return response
 
     def get_success_url(self):
-        return reverse_lazy('user-groups')
+        return f'/groups/{cache.get("current_group").id}'
 
 
 @method_decorator(login_required, name='dispatch')
@@ -109,4 +109,4 @@ class ExpenseUpdateView(UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('user-groups')
+        return f'/groups/{cache.get("current_group").id}'
