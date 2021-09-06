@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from groups.models import Group, GroupUser, Expense, ExpenseComment
+from users.models import Profile
 
 from django.core.cache import cache
 
@@ -38,6 +39,28 @@ class GroupsListView(ListView):
         context = super().get_context_data(**kwargs)
         context['user_groups'] = Group.objects.filter(profile=self.request.user.profile)
         return context
+
+
+@method_decorator(login_required, name='dispatch')
+class GroupCreateView(CreateView):
+    model = Group
+    template_name = 'groups/create-group.html'
+
+    fields = [
+        'name',
+        'group_users',
+    ]
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        group = form.save(commit=False)
+        group.created_by = Profile.objects.get(profile=self.request.user.profile)
+
+        group.save()
+        return response
+
+    def get_success_url(self):
+        return f'/groups/{cache.get("current_group").id}'
 
 
 @method_decorator(login_required, name='dispatch')
