@@ -57,6 +57,7 @@ class GroupCreateView(CreateView):
         group.created_by = self.request.user.profile
 
         GroupUser.objects.create(
+            balance=0,
             group=group,
             profile=self.request.user.profile
         )
