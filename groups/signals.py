@@ -3,8 +3,12 @@ from django.db.models.signals import post_save
 from .models import GroupUser, Expense
 
 
-def update_expense(sender, instance, created, **kwargs):
-    if not created:
+def recalculate_balances_caused_by_expense(sender, instance, created, **kwargs):
+    # update because of added expense
+    if created:
+        pass
+    # update because of expense update
+    elif not created:
         expense = instance
         split_with = GroupUser.objects.filter(group=expense.group)
         split_amount = expense.price / len(split_with)
@@ -17,4 +21,4 @@ def update_expense(sender, instance, created, **kwargs):
                 user.save()
 
 
-post_save.connect(update_expense, sender=Expense)
+post_save.connect(recalculate_balances_caused_by_expense, sender=Expense)
