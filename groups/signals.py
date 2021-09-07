@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 
 from .models import GroupUser, Expense
 
@@ -21,4 +21,12 @@ def recalculate_balances_caused_by_expense(sender, instance, created, **kwargs):
                 user.save()
 
 
+def recalculate_balances_expense_delete(sender, instance, created, **kwargs):
+    expense = instance
+    expense.delete()
+
+    # recalculate balances
+
+
 post_save.connect(recalculate_balances_caused_by_expense, sender=Expense)
+post_delete.connect(recalculate_balances_expense_delete, sender=Expense)
