@@ -54,13 +54,19 @@ class GroupCreateView(CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         group = form.save(commit=False)
-        group.created_by = Profile.objects.get(profile=self.request.user.profile)
+        group.created_by = self.request.user.profile
+
+        GroupUser.objects.create(
+            group=group,
+            profile=self.request.user.profile
+        )
 
         group.save()
         return response
 
     def get_success_url(self):
-        return f'/groups/{cache.get("current_group").id}'
+        if cache.get("current_group"):
+            return f'/groups/{cache.get("current_group").id}'
 
 
 @method_decorator(login_required, name='dispatch')
@@ -94,7 +100,8 @@ class ExpenseCreateView(CreateView):
         return response
 
     def get_success_url(self):
-        return f'/groups/{cache.get("current_group").id}'
+        if cache.get("current_group"):
+            return f'/groups/{cache.get("current_group").id}'
 
 
 @method_decorator(login_required, name='dispatch')
