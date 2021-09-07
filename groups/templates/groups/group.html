@@ -1,15 +1,17 @@
 <h2>{{group_data.name}}</h2>
 
+<h4>Expenses</h4>
 <div>
     {% for expense in group_expenses %}
         <p>{{expense}}</p>
     {% endfor %}
 </div>
 
+<h4>Group Users' balance</h4>
 <div>
     {% for user in group_users %}
-    <p>{{user.profile.full_name}}</p>
-    <p>{{user.balance}} PLN</p>
+        <p>{{user.profile.full_name}}</p>
+        <p>{{user.balance}} PLN</p>
     {% endfor %}
 </div>
 
