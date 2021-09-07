@@ -86,13 +86,13 @@ class ExpenseCreateView(CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         expense = form.save(commit=False)
-        expense.created_by = GroupUser.objects.get(profile=self.request.user.profile)
         expense.group = cache.get('current_group')
+        expense.created_by = GroupUser.objects.get(group=expense.group, profile=self.request.user.profile)
 
         if expense.comment:
             ExpenseComment.objects.create(
                 group=expense.group,
-                created_by=GroupUser.objects.get(profile=self.request.user.profile),
+                created_by=GroupUser.objects.get(group=expense.group, profile=self.request.user.profile),
                 comment_text=expense.comment,
                 expense=expense
             )
