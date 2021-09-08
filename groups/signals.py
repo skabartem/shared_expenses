@@ -8,7 +8,13 @@ def recalculate_balances_caused_by_expense(sender, instance, created, **kwargs):
     split_with = GroupUser.objects.filter(group=expense.group)
     # update because of added expense
     if not created:
-        pass
+        # pool previous expense price
+        previous_price = True
+        old_split_with = True
+        if previous_price != expense.price and old_split_with == expense.split_with:
+            pass
+        elif previous_price == expense.price and old_split_with != expense.split_with:
+            pass
     # update because of expense update
     elif created:
         split_amount = expense.price / len(split_with)
