@@ -79,6 +79,7 @@ class ExpenseCreateView(CreateView):
         'title',
         'price',
         'paid_date',
+        'group',
         'split_with',
         'comment'
     ]
