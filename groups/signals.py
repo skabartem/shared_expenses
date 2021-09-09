@@ -15,6 +15,8 @@ def recalculate_balances_caused_by_expense(sender, instance, created, **kwargs):
             pass
         elif previous_price == expense.price and old_split_with != expense.split_with:
             pass
+        elif previous_price != expense.price and old_split_with != expense.split_with:
+            pass
     # update caused by expense update
     elif created:
         split_amount = expense.price / len(split_with)
