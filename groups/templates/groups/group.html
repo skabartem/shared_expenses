@@ -3,7 +3,7 @@
 <h4>Expenses</h4>
 <div>
     {% for expense in group_expenses %}
-        <p>{{expense}}</p>
+        <p>{{expense}} <a href="{% url 'expense' expense.id %}">Edit</a> </p>
     {% endfor %}
 </div>
 
