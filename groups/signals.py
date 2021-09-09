@@ -22,7 +22,7 @@ def recalculate_balances_caused_by_expense(sender, instance, created, **kwargs):
             if user != expense.created_by:
                 user.balance = round(user.balance - split_amount, 2)
             else:
-                user.balance = round(user.balance + split_amount * (len(split_with)-1), 2)
+                user.balance = round(user.balance + expense.price - split_amount, 2)
             user.save()
 
 
