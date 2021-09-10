@@ -87,6 +87,7 @@ class ExpenseCreateView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
+        # TO FIX - FIRST TIME THE SIGNAL RAISES
         expense = form.save(commit=False)
         expense.group = cache.get('current_group')
         expense.created_by = GroupUser.objects.get(group=expense.group, profile=self.request.user.profile)
@@ -98,7 +99,8 @@ class ExpenseCreateView(CreateView):
                 comment_text=expense.comment,
                 expense=expense
             )
-
+            expense.comment = None
+        # TO FIX - SECOND TIME THE SIGNAL RAISES
         expense.save()
         return response
 
@@ -133,6 +135,7 @@ class ExpenseUpdateView(UpdateView):
                 comment_text=expense.comment,
                 expense=expense
             )
+            expense.comment = None
         # TO FIX - SECOND TIME THE SIGNAL RAISES
         expense.save()
         return response
