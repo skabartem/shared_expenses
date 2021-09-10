@@ -78,8 +78,9 @@ class ExpenseCreateView(CreateView):
     fields = [
         'title',
         'price',
-        'paid_date',
         'group',
+        'paid_date',
+        'paid_by',
         'split_with',
         'comment'
     ]
