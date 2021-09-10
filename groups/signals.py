@@ -11,7 +11,7 @@ def recalculate_balances_caused_by_expense(sender, instance, created, **kwargs):
     if created:
         split_amount = expense.price / len(split_with)
         for user in split_with:
-            if user != expense.created_by:
+            if user != expense.paid_by:
                 user.balance = round(user.balance - split_amount, 2)
             else:
                 user.balance = round(user.balance + expense.price - split_amount, 2)
