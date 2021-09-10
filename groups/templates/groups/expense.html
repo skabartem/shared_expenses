@@ -1,20 +1,13 @@
 <h2>Expense</h2>
 <form method="POST">
     {% csrf_token %}
-    {% for field in form %}
-        <div>
-            {{field.label}}
-            {{field}}
-        </div>
-    {% endfor %}
-
-
-    {% if expense_comments %}
-        <h3>Expense comments</h3>
-        {% for comment in expense_comments %}
-            <p>{{comment}}</p>
-        {% endfor %}
-    {% endif %}
-
+    {{ form.as_p }}
     <button type="submit">Submit</button>
 </form>
+
+{% if expense_comments %}
+    <h3>Expense comments</h3>
+    {% for comment in expense_comments %}
+        <p>{{comment}}</p>
+    {% endfor %}
+{% endif %}
