@@ -21,3 +21,9 @@ def recalculate_balances_created_expense(sender, instance, created, **kwargs):
 def recalculate_balances_updated_expense(sender, instance, **kwargs):
     updated_expense = instance
     prev_expense = Expense.objects.get(id=updated_expense.id)
+    if updated_expense.price == prev_expense.price and \
+            updated_expense.paid_by == prev_expense.paid_by and \
+            updated_expense.split_with == prev_expense.split_with:
+        print('NO CHANGES')
+    else:
+        print('RECALCULATION NEEDED')
