@@ -19,9 +19,10 @@ def recalculate_balances_created_expense(sender, instance, created, **kwargs):
 
 @receiver(pre_save, sender=Expense)
 def recalculate_balances_updated_expense(sender, instance, **kwargs):
-    if instance.id is None:
+    if not instance._state.adding:
         updated_expense = instance
         prev_expense = Expense.objects.get(id=updated_expense.id)
+        print('-----', prev_expense.price, updated_expense.price)
         if updated_expense.price == prev_expense.price and \
                 updated_expense.paid_by == prev_expense.paid_by and \
                 updated_expense.split_with == prev_expense.split_with:
