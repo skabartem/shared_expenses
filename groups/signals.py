@@ -22,9 +22,12 @@ def recalculate_balances_updated_expense(sender, instance, **kwargs):
     if not instance._state.adding:
         updated_expense = instance
         prev_expense = Expense.objects.get(id=updated_expense.id)
-        if updated_expense.price == prev_expense.price and \
-                updated_expense.paid_by == prev_expense.paid_by and \
-                updated_expense.split_with == prev_expense.split_with:
+
+        same_price = updated_expense.price == prev_expense.price
+        same_lander = updated_expense.paid_by == prev_expense.paid_by
+        same_borrowers = updated_expense.split_with == prev_expense.split_with
+
+        if same_price and same_lander and same_borrowers:
             print('NO CHANGES')
         else:
             print('RECALCULATION NEEDED')
