@@ -2,13 +2,13 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
 
-from django.urls import reverse_lazy
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from groups.models import Group, GroupUser, Expense, ExpenseComment
-from users.models import Profile
 
 from django.core.cache import cache
 
@@ -52,7 +52,6 @@ class GroupCreateView(CreateView):
     ]
 
     def form_valid(self, form):
-        response = super().form_valid(form)
         group = form.save(commit=False)
         group.created_by = self.request.user.profile
 
@@ -63,7 +62,7 @@ class GroupCreateView(CreateView):
         )
 
         group.save()
-        return response
+        return super().form_valid(form)
 
     def get_success_url(self):
         if cache.get("current_group"):
@@ -86,8 +85,6 @@ class ExpenseCreateView(CreateView):
     ]
 
     def form_valid(self, form):
-        response = super().form_valid(form)
-        # TO FIX - FIRST TIME THE SIGNAL RAISES
         expense = form.save(commit=False)
         expense.group = cache.get('current_group')
         expense.created_by = GroupUser.objects.get(group=expense.group, profile=self.request.user.profile)
@@ -100,9 +97,9 @@ class ExpenseCreateView(CreateView):
                 expense=expense
             )
             expense.comment = None
-        # TO FIX - SECOND TIME THE SIGNAL RAISES
         expense.save()
-        return response
+
+        return HttpResponseRedirect(reverse('detail', args=[str(expense.group.id)]))
 
     def get_success_url(self):
         if cache.get("current_group"):
@@ -123,8 +120,6 @@ class ExpenseUpdateView(UpdateView):
     ]
 
     def form_valid(self, form):
-        response = super().form_valid(form)
-        # TO FIX - FIRST TIME THE SIGNAL RAISES
         expense = form.save(commit=False)
         expense.created_by = GroupUser.objects.get(profile=self.request.user.profile)
 
@@ -136,9 +131,9 @@ class ExpenseUpdateView(UpdateView):
                 expense=expense
             )
             expense.comment = None
-        # TO FIX - SECOND TIME THE SIGNAL RAISES
         expense.save()
-        return response
+
+        return HttpResponseRedirect(reverse('detail', args=[str(expense.group.id)]))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
