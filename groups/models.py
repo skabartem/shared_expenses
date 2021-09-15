@@ -2,6 +2,7 @@ from django.db import models
 from users.models import Profile
 import uuid
 from datetime import datetime
+from django.contrib.postgres.fields import ArrayField
 
 
 class Group(models.Model):
@@ -53,3 +54,10 @@ class ExpenseComment(models.Model):
 
     def __str__(self):
         return f'{self.group} | {self.comment_text}'
+
+
+class ExpenseImpact(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, unique=True)
+    group_user = models.ForeignKey(GroupUser, on_delete=models.CASCADE, null=True)
+    expense = models.ForeignKey(Expense, on_delete=models.CASCADE, blank=True, null=True)
+    balance_impact = models.FloatField(null=True)

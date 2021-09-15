@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .models import GroupUser, Expense
+from .models import GroupUser, Expense, ExpenseImpact
 
 
 @receiver(post_save, sender=Expense)
@@ -11,9 +11,20 @@ def recalculate_balances_created_expense(sender, instance, created, **kwargs):
         split_amount = expense.price / len(split_with)
         for user in split_with:
             if user != expense.paid_by:
+                ExpenseImpact.objects.create(
+                    group_user=user,
+                    expense=expense,
+                    balance_impact=-split_amount,
+                )
                 user.balance = round(user.balance - split_amount, 2)
             else:
-                user.balance = round(user.balance + expense.price - split_amount, 2)
+                lent = expense.price - split_amount
+                ExpenseImpact.objects.create(
+                    group_user=user,
+                    expense=expense,
+                    balance_impact=lent,
+                )
+                user.balance = round(user.balance + lent, 2)
             user.save()
 
 
