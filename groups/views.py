@@ -114,7 +114,9 @@ class ExpenseUpdateView(UpdateView):
     fields = [
         'title',
         'price',
+        'group',
         'paid_date',
+        'paid_by',
         'split_with',
         'comment'
     ]
