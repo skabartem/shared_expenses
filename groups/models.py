@@ -2,7 +2,6 @@ from django.db import models
 from users.models import Profile
 import uuid
 from datetime import datetime
-from django.contrib.postgres.fields import ArrayField
 
 
 class Group(models.Model):
@@ -40,7 +39,7 @@ class Expense(models.Model):
     comment = models.TextField(max_length=500, null=True, blank=True)
 
     def __str__(self):
-        return f'{self.price} PLN | {self.title} | {self.group}'
+        return f'{self.price} PLN | {self.title}'
 
 
 class ExpenseComment(models.Model):
