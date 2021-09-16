@@ -25,6 +25,13 @@ class GroupUser(models.Model):
         return f'{self.group} | {self.profile}'
 
 
+class PaymentToSettle(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, unique=True)
+    sender = models.ForeignKey(GroupUser, related_name='borrower', on_delete=models.CASCADE, blank=True)
+    amount = models.FloatField(blank=True)
+    receiver = models.ForeignKey(GroupUser, on_delete=models.CASCADE, blank=True)
+
+
 class Expense(models.Model):
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, unique=True)
     title = models.CharField(null=True, max_length=100)
