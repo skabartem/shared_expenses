@@ -22,7 +22,6 @@ def min_of_2(x, y):
 
 
 def min_cash_flow_rec(grp_users, balances):
-    print(balances)
     nr = len(balances)
 
     max_credit = get_max(balances, nr)
