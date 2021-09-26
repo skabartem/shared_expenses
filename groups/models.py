@@ -30,6 +30,10 @@ class TransferToMake(models.Model):
     sender = models.ForeignKey(GroupUser, related_name='borrower', on_delete=models.CASCADE, blank=True)
     amount = models.FloatField(blank=True)
     receiver = models.ForeignKey(GroupUser, on_delete=models.CASCADE, blank=True)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.group} | {self.sender.profile} owes {self.amount} to {self.receiver.profile}'
 
 
 class Expense(models.Model):
