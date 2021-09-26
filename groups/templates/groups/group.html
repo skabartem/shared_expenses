@@ -7,14 +7,14 @@
     {% endfor %}
 </div>
 
-<h4>Group Users' balance</h4>
-<div>
-    {% for user in group_users %}
-        <p>{{user.profile.full_name}}</p>
-        <p>{{user.balance}} PLN</p>
-    {% endfor %}
-</div>
-
 <div>
     <a href="{% url 'add-expense' %}">Add Expense</a>
 </div>
+
+<h4>Group Users' balance</h4>
+<div>
+    {% for user in group_users %}
+        <p>{{user.profile.full_name}} | balance is {{user.balance}} PLN</p>
+    {% endfor %}
+</div>
+
