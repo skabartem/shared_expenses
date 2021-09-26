@@ -1,6 +1,13 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from .models import GroupUser, Expense, CashMovement
+from .utils import min_cash_flow_rec
+
+
+def manage_transfers(group):
+    grp_users = GroupUser.objects.filter(group=group)
+    balances = [user.balance for user in grp_users]
+    min_cash_flow_rec(grp_users, balances)
 
 
 @receiver(post_save, sender=Expense)
@@ -17,6 +24,7 @@ def recalculate_balances_created_expense(sender, instance, created, **kwargs):
             CashMovement.objects.create(group_user=user, expense=expense, balance_impact=lent)
             user.balance = round(user.balance + lent, 2)
         user.save()
+    manage_transfers(expense.group)
 
 
 @receiver(pre_save, sender=Expense)
@@ -37,3 +45,4 @@ def recalculate_balances_updated_expense(sender, instance, **kwargs):
                 impact.group_user.balance = impact.group_user.balance - impact.balance_impact
                 impact.group_user.save()
                 impact.delete()
+        manage_transfers(updated_expense.group)
