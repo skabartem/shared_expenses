@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .models import GroupUser, Expense, ExpenseImpact
+from .models import GroupUser, Expense, CashMovement
 
 
 @receiver(post_save, sender=Expense)
@@ -10,11 +10,11 @@ def recalculate_balances_created_expense(sender, instance, created, **kwargs):
     split_amount = expense.price / len(split_with)
     for user in split_with:
         if user != expense.paid_by:
-            ExpenseImpact.objects.create(group_user=user, expense=expense, balance_impact=-split_amount)
+            CashMovement.objects.create(group_user=user, expense=expense, balance_impact=-split_amount)
             user.balance = round(user.balance - split_amount, 2)
         else:
             lent = expense.price - split_amount
-            ExpenseImpact.objects.create(group_user=user, expense=expense, balance_impact=lent)
+            CashMovement.objects.create(group_user=user, expense=expense, balance_impact=lent)
             user.balance = round(user.balance + lent, 2)
         user.save()
 
@@ -30,7 +30,7 @@ def recalculate_balances_updated_expense(sender, instance, **kwargs):
         same_borrowers = updated_expense.split_with == prev_expense.split_with
 
         if not same_price or not same_lander or not same_borrowers:
-            impacted_users = ExpenseImpact.objects.filter(expense=prev_expense)
+            impacted_users = CashMovement.objects.filter(expense=prev_expense)
 
             # revert balance changes caused by the expense
             for impact in impacted_users:

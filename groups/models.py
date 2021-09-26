@@ -25,7 +25,7 @@ class GroupUser(models.Model):
         return f'{self.group} | {self.profile}'
 
 
-class PaymentToSettle(models.Model):
+class TransferToMake(models.Model):
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, unique=True)
     sender = models.ForeignKey(GroupUser, related_name='borrower', on_delete=models.CASCADE, blank=True)
     amount = models.FloatField(blank=True)
@@ -62,7 +62,7 @@ class ExpenseComment(models.Model):
         return f'{self.group} | {self.comment_text}'
 
 
-class ExpenseImpact(models.Model):
+class CashMovement(models.Model):
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, unique=True)
     group_user = models.ForeignKey(GroupUser, on_delete=models.CASCADE, null=True)
     expense = models.ForeignKey(Expense, on_delete=models.CASCADE, blank=True, null=True)
