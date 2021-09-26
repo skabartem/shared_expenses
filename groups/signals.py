@@ -1,10 +1,11 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .models import GroupUser, Expense, CashMovement
+from .models import GroupUser, Expense, CashMovement, TransferToMake
 from .utils import min_cash_flow_rec
 
 
 def manage_transfers(group):
+    TransferToMake.objects.filter(group=group).delete()
     grp_users = GroupUser.objects.filter(group=group)
     balances = [user.balance for user in grp_users]
     min_cash_flow_rec(grp_users, balances)
