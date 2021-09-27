@@ -56,7 +56,9 @@ class GroupCreateView(CreateView):
         group = form.save(commit=False)
         group.created_by = self.request.user.profile
         group.save()
-        
+
+        cache.set('current_group', group.id)
+
         GroupUser.objects.create(
             balance=0,
             group=group,
@@ -67,7 +69,7 @@ class GroupCreateView(CreateView):
 
     def get_success_url(self):
         if cache.get("current_group"):
-            return f'/groups/{cache.get("current_group").id}'
+            return f'/groups/{cache.get("current_group")}'
 
 
 @method_decorator(login_required, name='dispatch')
