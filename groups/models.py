@@ -17,7 +17,7 @@ class Group(models.Model):
 
 class GroupUser(models.Model):
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, unique=True)
-    balance = models.FloatField(null=True)
+    balance = models.FloatField(default=0)
     profile = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, null=True, on_delete=models.CASCADE)
 
