@@ -8,7 +8,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-from groups.models import Group, GroupUser, Expense, ExpenseComment
+from groups.models import Group, GroupUser, Expense, ExpenseComment, TransferToMake
 
 from django.core.cache import cache
 
@@ -23,6 +23,7 @@ class GroupDetailView(DetailView):
         context['group_expenses'] = Expense.objects.filter(group_id=self.kwargs['pk'])
         context['group_users'] = GroupUser.objects.filter(group_id=self.kwargs['pk'])
         context['group_data'] = Group.objects.get(id=self.kwargs['pk'])
+        context['cash_transfers'] = TransferToMake.objects.filter(group_id=self.kwargs['pk'])
 
         # https://stackoverflow.com/questions/58883570/pass-data-between-different-views-in-django/58912197#58912197
         # change to REST when learnt
