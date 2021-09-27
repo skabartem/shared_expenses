@@ -55,14 +55,14 @@ class GroupCreateView(CreateView):
     def form_valid(self, form):
         group = form.save(commit=False)
         group.created_by = self.request.user.profile
-
+        group.save()
+        
         GroupUser.objects.create(
             balance=0,
             group=group,
-            profile=self.request.user.profile
+            profile=group.created_by,
         )
 
-        group.save()
         return super().form_valid(form)
 
     def get_success_url(self):
