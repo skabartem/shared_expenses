@@ -28,7 +28,8 @@ def min_cash_flow_rec(grp_users, balances):
     max_debit = get_min(balances, nr)
 
     # recur until fully redistributed
-    if balances[max_credit] == 0 and balances[max_debit] == 0:
+    # <= 0.0099 fixes python error for adding floating values
+    if balances[max_credit] <= 0.0009 and balances[max_debit] <= 0.0009:
         return 0
 
     smallest = min_of_2(-balances[max_debit], balances[max_credit])
@@ -41,5 +42,4 @@ def min_cash_flow_rec(grp_users, balances):
         amount=smallest,
         group=grp_users[0].group,
     )
-
     min_cash_flow_rec(grp_users, balances)
