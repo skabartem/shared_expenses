@@ -89,6 +89,7 @@ class ExpenseCreateView(CreateView):
         current_group = group_users[0].group
         form.fields['group'].initial = current_group
         form.fields['paid_by'].initial = GroupUser.objects.get(group=current_group, profile=self.request.user.profile)
+        form.fields['split_with'].initial = group_users
         return form
 
     def form_valid(self, form):
