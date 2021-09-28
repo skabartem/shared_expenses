@@ -39,21 +39,24 @@ def recalculate_group_balances(sender, instance, created, **kwargs):
     split_with = GroupUser.objects.filter(group=expense.group)
     split_amount = round(expense.price / len(split_with), 2)
 
-    lent = expense.price - split_amount if expense.paid_by in split_with else expense.price
-    rounding_fix = round(split_amount + 0.01, 2) if expense.price % split_amount else 0
+    lent = round(expense.price - split_amount, 2) if expense.paid_by in split_with else round(expense.price, 2)
+    if expense.price % split_amount:
+        last_split = round(expense.price - split_amount * (len(split_with) - 1), 2)
+    else:
+        last_split = 0
 
     for user in split_with:
-        if rounding_fix and user != expense.paid_by:
-            user.balance += -rounding_fix
-            CashMovement.objects.create(group_user=user, expense=expense, balance_impact=-rounding_fix)
-            rounding_fix = 0
+        if last_split and user != expense.paid_by:
+            user.balance = round(user.balance - last_split, 2)
+            CashMovement.objects.create(group_user=user, expense=expense, balance_impact=-last_split)
+            last_split = 0
         elif user != expense.paid_by:
-            user.balance += -split_amount
+            user.balance = round(user.balance - split_amount, 2)
             CashMovement.objects.create(group_user=user, expense=expense, balance_impact=-split_amount)
         user.save()
 
     lender = GroupUser.objects.get(id=expense.paid_by.id)
-    lender.balance += lent
+    lender.balance = round(lender.balance + lent, 2)
     CashMovement.objects.create(group_user=expense.paid_by, expense=expense, balance_impact=lent)
     lender.save()
 
