@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from groups.models import Group, GroupUser, Expense, ExpenseComment, TransferToMake
+from .forms import ExpenseCreateForm
 
 from django.core.cache import cache
 
@@ -75,17 +76,15 @@ class GroupCreateView(CreateView):
 @method_decorator(login_required, name='dispatch')
 class ExpenseCreateView(CreateView):
     model = Expense
+    form_class = ExpenseCreateForm
     template_name = 'groups/expense.html'
 
-    fields = [
-        'title',
-        'price',
-        'group',
-        'paid_date',
-        'paid_by',
-        'split_with',
-        'comment'
-    ]
+    def get_form(self, *args, **kwargs):
+        form = super().get_form(*args, **kwargs)
+        group_users = GroupUser.objects.filter(group=cache.get('current_group'))
+        form.fields['paid_by'].queryset = group_users
+        form.fields['split_with'].queryset = group_users
+        return form
 
     def form_valid(self, form):
         expense = form.save(commit=False)
@@ -95,7 +94,7 @@ class ExpenseCreateView(CreateView):
         if expense.comment:
             ExpenseComment.objects.create(
                 group=expense.group,
-                created_by=GroupUser.objects.get(group=expense.group, profile=self.request.user.profile),
+                created_by=expense.created_by,
                 comment_text=expense.comment,
                 expense=expense
             )
@@ -112,26 +111,24 @@ class ExpenseCreateView(CreateView):
 @method_decorator(login_required, name='dispatch')
 class ExpenseUpdateView(UpdateView):
     model = Expense
+    form_class = ExpenseCreateForm
     template_name = 'groups/expense.html'
 
-    fields = [
-        'title',
-        'price',
-        'group',
-        'paid_date',
-        'paid_by',
-        'split_with',
-        'comment'
-    ]
+    def get_form(self, *args, **kwargs):
+        form = super().get_form(*args, **kwargs)
+        group_users = GroupUser.objects.filter(group=cache.get('current_group'))
+        form.fields['paid_by'].queryset = group_users
+        form.fields['split_with'].queryset = group_users
+        return form
 
     def form_valid(self, form):
         expense = form.save(commit=False)
-        expense.created_by = GroupUser.objects.get(profile=self.request.user.profile)
+        expense.created_by = GroupUser.objects.get(group=expense.group, profile=self.request.user.profile)
 
         if expense.comment:
             ExpenseComment.objects.create(
-                group=cache.get('current_group'),
-                created_by=GroupUser.objects.get(profile=self.request.user.profile),
+                group=expense.group,
+                created_by=expense.created_by,
                 comment_text=expense.comment,
                 expense=expense
             )
