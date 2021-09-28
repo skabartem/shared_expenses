@@ -1,6 +1,6 @@
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, FormView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -151,3 +151,12 @@ class ExpenseUpdateView(UpdateView):
 
     def get_success_url(self):
         return f'/groups/{cache.get("current_group").id}'
+
+
+@method_decorator(login_required, name='dispatch')
+class ExpenseDeleteView(DeleteView):
+    model = Expense
+
+    def get_success_url(self):
+        if cache.get("current_group"):
+            return f'/groups/{cache.get("current_group").id}'
