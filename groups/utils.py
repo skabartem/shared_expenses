@@ -33,8 +33,8 @@ def min_cash_flow_rec(grp_users, balances):
         return 0
 
     smallest = min_of_2(-balances[max_debit], balances[max_credit])
-    balances[max_credit] -= smallest
-    balances[max_debit] += smallest
+    balances[max_credit] = round(balances[max_credit] - smallest, 2)
+    balances[max_debit] = round(balances[max_debit] + smallest, 2)
 
     TransferToMake.objects.create(
         sender=grp_users[max_debit],
