@@ -83,6 +83,7 @@ class ExpenseCreateView(CreateView):
         form = super().get_form(*args, **kwargs)
         group_users = GroupUser.objects.filter(group=cache.get('current_group'))
         # limit only to current group users
+        form.fields['group'].queryset = Group.objects.filter(profile=self.request.user.profile)
         form.fields['paid_by'].queryset = group_users
         form.fields['split_with'].queryset = group_users
         # pre_fill form
@@ -126,6 +127,7 @@ class ExpenseUpdateView(UpdateView):
         form = super().get_form(*args, **kwargs)
         group_users = GroupUser.objects.filter(group=cache.get('current_group'))
         # limit only to current group users
+        form.fields['group'].queryset = Group.objects.filter(profile=self.request.user.profile)
         form.fields['paid_by'].queryset = group_users
         form.fields['split_with'].queryset = group_users
         return form
