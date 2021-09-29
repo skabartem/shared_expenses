@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from .models import Expense
 
 
-class ExpenseCreateForm(ModelForm):
+class ExpenseForm(ModelForm):
     class Meta:
         model = Expense
         fields = [

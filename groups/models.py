@@ -71,3 +71,6 @@ class CashMovement(models.Model):
     group_user = models.ForeignKey(GroupUser, on_delete=models.CASCADE, null=True)
     expense = models.ForeignKey(Expense, on_delete=models.CASCADE, blank=True, null=True)
     balance_impact = models.FloatField(null=True)
+
+    def __str__(self):
+        return f'{self.expense} | {self.group_user} | {self.balance_impact}'

@@ -9,10 +9,10 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from groups.models import Group, GroupUser, Expense, ExpenseComment, TransferToMake
-from .forms import ExpenseCreateForm
+from .forms import ExpenseForm
 
 from django.core.cache import cache
-from django.forms import ModelMultipleChoiceField
+
 
 @method_decorator(login_required, name='dispatch')
 class GroupDetailView(DetailView):
@@ -76,7 +76,7 @@ class GroupCreateView(CreateView):
 @method_decorator(login_required, name='dispatch')
 class ExpenseCreateView(CreateView):
     model = Expense
-    form_class = ExpenseCreateForm
+    form_class = ExpenseForm
     template_name = 'groups/expense.html'
 
     def get_form(self, *args, **kwargs):
@@ -94,7 +94,7 @@ class ExpenseCreateView(CreateView):
         return form
 
     def post(self, request, **kwargs):
-        expense_form = ExpenseCreateForm(request.POST)
+        expense_form = ExpenseForm(request.POST)
         if expense_form.is_valid():
             expense = expense_form.save(commit=False)
             expense.group = cache.get('current_group')
@@ -117,10 +117,9 @@ class ExpenseCreateView(CreateView):
             return f'/groups/{cache.get("current_group").id}'
 
 
-@method_decorator(login_required, name='dispatch')
 class ExpenseUpdateView(UpdateView):
     model = Expense
-    form_class = ExpenseCreateForm
+    form_class = ExpenseForm
     template_name = 'groups/expense.html'
 
     def get_form(self, *args, **kwargs):
@@ -145,6 +144,7 @@ class ExpenseUpdateView(UpdateView):
             )
             expense.comment = None
         expense.save()
+        form.save_m2m()
 
         return HttpResponseRedirect(reverse('detail', args=[str(expense.group.id)]))
 
