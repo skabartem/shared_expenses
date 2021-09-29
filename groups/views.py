@@ -12,7 +12,7 @@ from groups.models import Group, GroupUser, Expense, ExpenseComment, TransferToM
 from .forms import ExpenseCreateForm
 
 from django.core.cache import cache
-
+from django.forms import ModelMultipleChoiceField
 
 @method_decorator(login_required, name='dispatch')
 class GroupDetailView(DetailView):
@@ -86,27 +86,29 @@ class ExpenseCreateView(CreateView):
         form.fields['paid_by'].queryset = group_users
         form.fields['split_with'].queryset = group_users
         # pre_fill form
-        current_group = group_users[0].group
+        current_group = cache.get("current_group")
         form.fields['group'].initial = current_group
         form.fields['paid_by'].initial = GroupUser.objects.get(group=current_group, profile=self.request.user.profile)
         form.fields['split_with'].initial = group_users
         return form
 
-    def form_valid(self, form):
-        expense = form.save(commit=False)
-        expense.group = cache.get('current_group')
-        expense.created_by = GroupUser.objects.get(group=expense.group, profile=self.request.user.profile)
+    def post(self, request, **kwargs):
+        expense_form = ExpenseCreateForm(request.POST)
+        if expense_form.is_valid():
+            expense = expense_form.save(commit=False)
+            expense.group = cache.get('current_group')
+            expense.created_by = GroupUser.objects.get(group=expense.group, profile=self.request.user.profile)
 
-        if expense.comment:
-            ExpenseComment.objects.create(
-                group=expense.group,
-                created_by=expense.created_by,
-                comment_text=expense.comment,
-                expense=expense
-            )
-            expense.comment = None
-        expense.save()
-
+            if expense.comment:
+                ExpenseComment.objects.create(
+                    group=expense.group,
+                    created_by=expense.created_by,
+                    comment_text=expense.comment,
+                    expense=expense
+                )
+                expense.comment = None
+            expense.save()
+            expense_form.save_m2m()
         return HttpResponseRedirect(reverse('detail', args=[str(expense.group.id)]))
 
     def get_success_url(self):
