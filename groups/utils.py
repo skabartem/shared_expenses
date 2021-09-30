@@ -1,4 +1,4 @@
-from .models import TransferToMake
+from .models import TransferToMake, GroupUser, CashMovement
 
 
 def get_min(arr, nr):
@@ -43,3 +43,38 @@ def min_cash_flow_rec(grp_users, balances):
         group=grp_users[0].group,
     )
     min_cash_flow_rec(grp_users, balances)
+
+
+def manage_transfers(group):
+    TransferToMake.objects.filter(group=group).delete()
+    grp_users = GroupUser.objects.filter(group=group)
+    balances = [user.balance for user in grp_users]
+    min_cash_flow_rec(grp_users, balances)
+
+
+def track_cash_movements(expense, updated_borrowers):
+    split_amount = round(expense.price / len(updated_borrowers), 2)
+
+    lent = round(expense.price - split_amount, 2) if expense.paid_by in updated_borrowers else round(expense.price, 2)
+    if expense.price % split_amount:
+        last_split = round(expense.price - split_amount * (len(updated_borrowers) - 1), 2)
+    else:
+        last_split = 0
+
+    for user in updated_borrowers:
+        if last_split and user != expense.paid_by:
+            user.balance = round(user.balance - last_split, 2)
+            CashMovement.objects.create(group_user=user, expense=expense, balance_impact=-last_split)
+            last_split = 0
+        elif user != expense.paid_by:
+            user.balance = round(user.balance - split_amount, 2)
+            CashMovement.objects.create(group_user=user, expense=expense, balance_impact=-split_amount)
+        user.save()
+
+    lender = GroupUser.objects.get(id=expense.paid_by.id)
+    lender.balance = round(lender.balance + lent, 2)
+    CashMovement.objects.create(group_user=expense.paid_by, expense=expense, balance_impact=lent)
+    lender.save()
+
+    manage_transfers(expense.group)
+
