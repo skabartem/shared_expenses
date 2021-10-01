@@ -8,7 +8,6 @@ class ExpenseForm(ModelForm):
         fields = [
             'title',
             'price',
-            'group',
             'paid_date',
             'paid_by',
             'split_with',
