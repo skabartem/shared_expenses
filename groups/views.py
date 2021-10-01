@@ -58,6 +58,8 @@ class GroupCreateView(CreateView):
         group.created_by = self.request.user.profile
         group.save()
 
+        self.request.session['group_id'] = str(group.id)
+
         GroupUser.objects.create(
             balance=0,
             group=group,
