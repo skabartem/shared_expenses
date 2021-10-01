@@ -12,8 +12,6 @@ from groups.models import Group, GroupUser, Expense, ExpenseComment, TransferToM
 from .forms import ExpenseForm
 from .utils import track_cash_movements
 
-from django.core.cache import cache
-
 
 @method_decorator(login_required, name='dispatch')
 class GroupDetailView(DetailView):
@@ -22,14 +20,15 @@ class GroupDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['group_expenses'] = Expense.objects.filter(group_id=self.kwargs['pk'])
-        context['group_users'] = GroupUser.objects.filter(group_id=self.kwargs['pk'])
-        context['group_data'] = Group.objects.get(id=self.kwargs['pk'])
-        context['cash_transfers'] = TransferToMake.objects.filter(group_id=self.kwargs['pk'])
 
-        # https://stackoverflow.com/questions/58883570/pass-data-between-different-views-in-django/58912197#58912197
-        # change to REST when learnt
-        cache.set('current_group', context['group_data'])
+        group = Group.objects.get(id=self.kwargs['pk'])
+
+        context['group_expenses'] = Expense.objects.filter(group=group)
+        context['group_users'] = GroupUser.objects.filter(group=group)
+        context['cash_transfers'] = TransferToMake.objects.filter(group=group)
+        context['group_data'] = group
+
+        self.request.session['group_id'] = str(group.id)
         return context
 
 
@@ -59,8 +58,6 @@ class GroupCreateView(CreateView):
         group.created_by = self.request.user.profile
         group.save()
 
-        cache.set('current_group', group.id)
-
         GroupUser.objects.create(
             balance=0,
             group=group,
@@ -70,8 +67,8 @@ class GroupCreateView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        if cache.get("current_group"):
-            return f'/groups/{cache.get("current_group")}'
+        group_id = self.request.session.get('group_id')
+        return f'/groups/{group_id}'
 
 
 @method_decorator(login_required, name='dispatch')
@@ -81,23 +78,27 @@ class ExpenseCreateView(CreateView):
     template_name = 'groups/expense.html'
 
     def get_form(self, *args, **kwargs):
+        group_id = self.request.session.get('group_id')
+        group = Group.objects.get(id=group_id)
+
         form = super().get_form(*args, **kwargs)
-        group_users = GroupUser.objects.filter(group=cache.get('current_group'))
+        group_users = GroupUser.objects.filter(group=group)
         # limit only to current group users
         form.fields['paid_by'].queryset = group_users
         form.fields['split_with'].queryset = group_users
         # pre_fill form
-        current_group = cache.get("current_group")
-        form.fields['paid_by'].initial = GroupUser.objects.get(group=current_group, profile=self.request.user.profile)
+        form.fields['paid_by'].initial = GroupUser.objects.get(group=group, profile=self.request.user.profile)
         form.fields['split_with'].initial = group_users
         return form
 
     def post(self, request, **kwargs):
         expense_form = ExpenseForm(request.POST)
+        group_id = self.request.session.get('group_id')
+        group = Group.objects.get(id=group_id)
         if expense_form.is_valid():
             expense = expense_form.save(commit=False)
-            expense.group = cache.get('current_group')
-            expense.created_by = GroupUser.objects.get(group=expense.group, profile=self.request.user.profile)
+            expense.group = group
+            expense.created_by = GroupUser.objects.get(group=group, profile=self.request.user.profile)
 
             if expense.comment:
                 ExpenseComment.objects.create(
@@ -115,8 +116,8 @@ class ExpenseCreateView(CreateView):
         return HttpResponseRedirect(reverse('detail', args=[str(expense.group.id)]))
 
     def get_success_url(self):
-        if cache.get("current_group"):
-            return f'/groups/{cache.get("current_group").id}'
+        group_id = self.request.session.get('group_id')
+        return f'/groups/{group_id}'
 
 
 class ExpenseUpdateView(UpdateView):
@@ -125,12 +126,14 @@ class ExpenseUpdateView(UpdateView):
     template_name = 'groups/expense.html'
 
     def get_form(self, *args, **kwargs):
+        group_id = self.request.session.get('group_id')
+        group = Group.objects.get(id=group_id)
+
         form = super().get_form(*args, **kwargs)
-        group_users = GroupUser.objects.filter(group=cache.get('current_group'))
+        group_users = GroupUser.objects.filter(group=group)
         # limit only to current group users
         form.fields['paid_by'].queryset = group_users
         form.fields['split_with'].queryset = group_users
-        # self.kwargs['test'] = form.cleaned_data
         return form
 
     def form_valid(self, form):
@@ -181,7 +184,8 @@ class ExpenseUpdateView(UpdateView):
         return context
 
     def get_success_url(self):
-        return f'/groups/{cache.get("current_group").id}'
+        group_id = self.request.session.get('group_id')
+        return f'/groups/{group_id}'
 
 
 @method_decorator(login_required, name='dispatch')
@@ -189,5 +193,5 @@ class ExpenseDeleteView(DeleteView):
     model = Expense
 
     def get_success_url(self):
-        if cache.get("current_group"):
-            return f'/groups/{cache.get("current_group").id}'
+        group_id = self.request.session.get('group_id')
+        return f'/groups/{group_id}'
