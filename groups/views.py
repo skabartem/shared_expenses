@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from groups.models import Group, GroupUser, Expense, ExpenseComment, TransferToMake, CashMovement
-from .forms import ExpenseForm
+from .forms import ExpenseForm, SettleUpForm
 from .utils import track_cash_movements
 
 
@@ -193,6 +193,49 @@ class ExpenseUpdateView(UpdateView):
 @method_decorator(login_required, name='dispatch')
 class ExpenseDeleteView(DeleteView):
     model = Expense
+
+    def get_success_url(self):
+        group_id = self.request.session.get('group_id')
+        return f'/groups/{group_id}'
+
+
+@method_decorator(login_required, name='dispatch')
+class SettleUpView(CreateView):
+    model = Expense
+    form_class = SettleUpForm
+    template_name = 'groups/settle-up.html'
+
+    def get_form(self, *args, **kwargs):
+        group_id = self.request.session.get('group_id')
+        group = Group.objects.get(id=group_id)
+
+        form = super().get_form(*args, **kwargs)
+        group_users = GroupUser.objects.filter(group=group)
+        # limit only to current group users
+        form.fields['paid_by'].queryset = group_users
+        form.fields['split_with'].queryset = group_users
+        # pre_fill form
+        form.fields['paid_by'].initial = GroupUser.objects.get(group=group, profile=self.request.user.profile)
+        form.fields['split_with'].initial = group_users
+        return form
+
+    def post(self, request, **kwargs):
+        settlement_form = SettleUpForm(request.POST)
+        group_id = self.request.session.get('group_id')
+        group = Group.objects.get(id=group_id)
+
+        if settlement_form.is_valid():
+            settlement = settlement_form.save(commit=False)
+            settlement.group = group
+            settlement.created_by = GroupUser.objects.get(group=group, profile=self.request.user.profile)
+            settlement.title = f'{settlement.paid_by} gave back {settlement.price}'
+
+            settlement.save()
+            settlement_form.save_m2m()
+
+            track_cash_movements(settlement, settlement.split_with.all())
+
+            return HttpResponseRedirect(reverse('detail', args=[str(settlement.group.id)]))
 
     def get_success_url(self):
         group_id = self.request.session.get('group_id')
