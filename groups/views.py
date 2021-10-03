@@ -8,6 +8,8 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
+from django.db.models import Q
+
 from groups.models import Group, GroupUser, Expense, ExpenseComment, TransferToMake, CashMovement
 from .forms import ExpenseForm, SettleUpForm
 from .utils import track_cash_movements
@@ -212,11 +214,18 @@ class SettleUpView(CreateView):
 
         form = super().get_form(*args, **kwargs)
         group_users = GroupUser.objects.filter(group=group)
+        logged_grp_user = GroupUser.objects.get(group=group, profile=self.request.user.profile)
         # limit only to current group users
         form.fields['paid_by'].queryset = group_users
         form.fields['paid_to'].queryset = group_users
         # pre_fill form
-        form.fields['paid_by'].initial = GroupUser.objects.get(group=group, profile=self.request.user.profile)
+        related_transfers = TransferToMake.objects.filter(Q(sender=logged_grp_user) | Q(receiver=logged_grp_user))
+        first_transfer = related_transfers.first()
+        if first_transfer is None:
+            first_transfer = TransferToMake.objects.filter(group=group).first()
+        form.fields['paid_by'].initial = first_transfer.sender
+        form.fields['paid_to'].initial = first_transfer.receiver
+        form.fields['price'].initial = first_transfer.amount
         return form
 
     def post(self, request, **kwargs):
