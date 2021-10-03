@@ -142,7 +142,7 @@ class ExpenseUpdateView(UpdateView):
         old_expense = Expense.objects.get(id=self.kwargs['pk'])
         old_price = old_expense.price
         old_lender = old_expense.paid_by
-        old_borrowers = old_expense.split_with.all()
+        old_borrowers = list(old_expense.split_with.all())
 
         expense = form.save(commit=False)
         expense.created_by = GroupUser.objects.get(group=expense.group, profile=self.request.user.profile)
@@ -165,7 +165,8 @@ class ExpenseUpdateView(UpdateView):
         '''
         same_price = expense.price == old_price
         same_lander = expense.paid_by == old_lender
-        same_borrowers = expense.split_with == old_borrowers
+        same_borrowers = list(expense.split_with.all()) == old_borrowers
+
         if not same_price or not same_lander or not same_borrowers:
             cash_movements = CashMovement.objects.filter(expense=old_expense)
             # revert balance changes caused by the expense
