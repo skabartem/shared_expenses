@@ -124,6 +124,7 @@ class ExpenseCreateView(CreateView):
         return f'/groups/{group_id}'
 
 
+@method_decorator(login_required, name='dispatch')
 class ExpenseUpdateView(UpdateView):
     model = Expense
     form_class = ExpenseForm
