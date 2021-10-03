@@ -214,10 +214,9 @@ class SettleUpView(CreateView):
         group_users = GroupUser.objects.filter(group=group)
         # limit only to current group users
         form.fields['paid_by'].queryset = group_users
-        form.fields['split_with'].queryset = group_users
+        form.fields['paid_to'].queryset = group_users
         # pre_fill form
         form.fields['paid_by'].initial = GroupUser.objects.get(group=group, profile=self.request.user.profile)
-        form.fields['split_with'].initial = group_users
         return form
 
     def post(self, request, **kwargs):
@@ -231,7 +230,10 @@ class SettleUpView(CreateView):
             settlement.created_by = GroupUser.objects.get(group=group, profile=self.request.user.profile)
             settlement.title = f'{settlement.paid_by} gave back {settlement.price}'
 
+            paid_to = settlement_form.cleaned_data.get('paid_to')
+
             settlement.save()
+            settlement.split_with.set([paid_to])
             settlement_form.save_m2m()
 
             track_cash_movements(settlement, settlement.split_with.all())
