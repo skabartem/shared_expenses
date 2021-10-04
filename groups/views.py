@@ -123,6 +123,11 @@ class ExpenseCreateView(CreateView):
         group_id = self.request.session.get('group_id')
         return f'/groups/{group_id}'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['group_id'] = self.request.session.get('group_id')
+        return context
+
 
 @method_decorator(login_required, name='dispatch')
 class ExpenseUpdateView(UpdateView):
@@ -187,6 +192,7 @@ class ExpenseUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['expense_comments'] = ExpenseComment.objects.filter(expense_id=self.kwargs['pk'])
+        context['group_id'] = self.request.session.get('group_id')
         return context
 
     def get_success_url(self):
@@ -254,3 +260,8 @@ class SettleUpView(CreateView):
     def get_success_url(self):
         group_id = self.request.session.get('group_id')
         return f'/groups/{group_id}'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['group_id'] = self.request.session.get('group_id')
+        return context

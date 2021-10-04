@@ -5,6 +5,8 @@
     <button type="submit">Submit</button>
 </form>
 
+<a href="{% url 'detail' group_id %}">Back to group</a>
+
 {% if expense_comments %}
     <h3>Expense comments</h3>
     {% for comment in expense_comments %}
