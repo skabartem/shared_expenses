@@ -274,9 +274,9 @@ class SettleUpView(CreateView):
             settlement = settlement_form.save(commit=False)
             settlement.group = group
             settlement.created_by = GroupUser.objects.get(group=group, profile=self.request.user.profile)
-            settlement.title = f'{settlement.paid_by} gave back {settlement.price}'
 
             paid_to = settlement_form.cleaned_data.get('paid_to')
+            settlement.title = f'{settlement.paid_by} gave back {settlement.price} to {paid_to}'
 
             settlement.save()
             settlement.split_with.set([paid_to])
