@@ -224,9 +224,10 @@ class SettleUpView(CreateView):
         first_transfer = related_transfers.first()
         if first_transfer is None:
             first_transfer = TransferToMake.objects.filter(group=group).first()
-        form.fields['paid_by'].initial = first_transfer.sender
-        form.fields['paid_to'].initial = first_transfer.receiver
-        form.fields['price'].initial = first_transfer.amount
+        if first_transfer is not None:
+            form.fields['paid_by'].initial = first_transfer.sender
+            form.fields['paid_to'].initial = first_transfer.receiver
+            form.fields['price'].initial = first_transfer.amount
         return form
 
     def post(self, request, **kwargs):
