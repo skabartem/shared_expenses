@@ -22,6 +22,16 @@ class GroupDetailView(DetailView):
     model = Group
     template_name = 'groups/group.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        group = Group.objects.get(id=self.kwargs['pk'])
+
+        # check permission
+        try:
+            GroupUser.objects.get(group=group, profile=self.request.user.profile)
+        except GroupUser.DoesNotExist:
+            raise PermissionDenied("You can't access the group")
+        return super(GroupDetailView, self).dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
