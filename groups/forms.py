@@ -13,6 +13,9 @@ class ExpenseForm(forms.ModelForm):
             'split_with',
             'comment'
         ]
+        widgets = {
+            'split_with': forms.CheckboxSelectMultiple(),
+        }
 
 
 class SettleUpForm(forms.ModelForm):
