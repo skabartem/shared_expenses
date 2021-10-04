@@ -172,7 +172,6 @@ class ExpenseUpdateView(UpdateView):
         old_borrowers = list(old_expense.split_with.all())
 
         expense = form.save(commit=False)
-        expense.created_by = GroupUser.objects.get(group=expense.group, profile=self.request.user.profile)
 
         if expense.comment:
             ExpenseComment.objects.create(
