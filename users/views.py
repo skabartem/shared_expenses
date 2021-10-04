@@ -8,12 +8,22 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
+from django.http import HttpResponseRedirect
+
 
 class UserLogin(LoginView):
     template_name = 'users/login.html'
 
     def get_success_url(self):
         return reverse_lazy('user-groups')
+
+
+@method_decorator(login_required, name='dispatch')
+class UserLogout(LogoutView):
+
+    def dispatch(self, request, *args, **kwargs):
+        logout(request)
+        return HttpResponseRedirect('/')
 
 
 class SignUp(CreateView):
@@ -32,7 +42,6 @@ class SignUp(CreateView):
         return valid
 
 
-# Edit Profile View
 @method_decorator(login_required, name='dispatch')
 class ProfileView(UpdateView):
     model = Profile
@@ -41,12 +50,3 @@ class ProfileView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('user-groups')
-
-
-class UserLogout(LogoutView):
-
-    def get(self, request):
-        logout(request)
-
-    def get_success_url(self):
-        return reverse_lazy('login-user')
