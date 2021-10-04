@@ -5,6 +5,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 
+from django.core.exceptions import PermissionDenied
+
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -138,9 +140,16 @@ class ExpenseUpdateView(UpdateView):
     def get_form(self, *args, **kwargs):
         group_id = self.request.session.get('group_id')
         group = Group.objects.get(id=group_id)
+        group_users = GroupUser.objects.filter(group=group)
+
+        # check permission
+        expense_group = Expense.objects.get(id=self.kwargs['pk']).group
+        expense_group_users = expense_group.groupuser_set.all()
+        if GroupUser.objects.get(group=group, profile=self.request.user.profile) not in expense_group_users:
+            raise PermissionDenied("You can't edit the expense")
 
         form = super().get_form(*args, **kwargs)
-        group_users = GroupUser.objects.filter(group=group)
+
         # limit only to current group users
         form.fields['paid_by'].queryset = group_users
         form.fields['split_with'].queryset = group_users
@@ -203,6 +212,17 @@ class ExpenseUpdateView(UpdateView):
 @method_decorator(login_required, name='dispatch')
 class ExpenseDeleteView(DeleteView):
     model = Expense
+
+    def dispatch(self, request, *args, **kwargs):
+        group_id = self.request.session.get('group_id')
+        group = Group.objects.get(id=group_id)
+
+        # check permission
+        expense_group = Expense.objects.get(id=self.kwargs['pk']).group
+        expense_group_users = expense_group.groupuser_set.all()
+        if GroupUser.objects.get(group=group, profile=self.request.user.profile) not in expense_group_users:
+            raise PermissionDenied("You can't edit the expense")
+        return super(ExpenseDeleteView, self).dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         group_id = self.request.session.get('group_id')
