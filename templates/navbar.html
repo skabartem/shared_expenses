@@ -1,32 +1,35 @@
 {% load static %}
 
-<!-- Header Section -->
 <header class="header">
-    <div class="container container--narrow">
-        <a href="{% url 'profiles' %}" class="header__logo">
-            <img src="{% static 'images/logo.svg' %} " alt="DevSearch Logo" />
-        </a>
+        <div class="container">
+            <div class="header__inner">
+                <div class="header__logo">
+                 <a href="">
+                Slash
+                </a>
+                </div>
+                <nav class="header__menu">
+                <ul>
+                    <li><a href="{% url 'create-group' %}" class="custom-icon plus" style="background-image: url({% static 'media/plus.svg' %});"></a></li>
+                    <li class="line"></li>
+                    <li><a href="#"class="custom-icon bell"style="background-image: url({% static 'media/bell.svg' %});"><span></span></a></li>
+                    <li class="user__box">
+                        <div class="user">
+                            <div class="custom-icon user__img"style="background-image: url();"></div>
+                            <div class="user__name">ADD USERNAME</div>
 
-        <nav class="header__nav">
-            <input type="checkbox" id="responsive-menu" />
-            <label for="responsive-menu" class="toggle-menu">
-                <span>Menu</span>
-                <div class="toggle-menu__lines"></div>
-            </label>
-            <ul class="header__menu">
-                <li class="header__menuItem"><a href="{% url 'profiles' %}">Developers</a></li>
-                <li class="header__menuItem"><a href="{% url 'projects' %}">Projects</a></li>
+                        </div>
+                        <div class="user__menu">
+                                <ul>
+                                    <li><a href="#">Profile</a></li>
+                                    <li><a href="#">Logout</a></li>
+                                </ul>
+                        </div>
+                    </li>
+                </ul>
+                </nav>
+            </div>
 
+        </div>
 
-
-                {% if request.user.is_authenticated %}
-                <li class="header__menuItem"><a href="{% url 'inbox' %}">Inbox</a></li>
-                <li class="header__menuItem"><a href="{% url 'account' %}">Account</a></li>
-                <li class="header__menuItem"><a href="{% url 'logout' %}" class="btn btn--sub">Logout</a></li>
-                {% else %}
-                <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sub">Login/Sign Up</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-    </div>
-</header>
+    </header>
