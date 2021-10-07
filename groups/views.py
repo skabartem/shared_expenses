@@ -1,6 +1,7 @@
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from users.models import Profile
 
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -37,6 +38,7 @@ class GroupDetailView(DetailView):
 
         group = Group.objects.get(id=self.kwargs['pk'])
 
+        context['logged_user'] = self.request.user.profile
         context['group_expenses'] = Expense.objects.filter(group=group)
         context['group_users'] = GroupUser.objects.filter(group=group)
         context['cash_transfers'] = TransferToMake.objects.filter(group=group)
