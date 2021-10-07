@@ -41,6 +41,7 @@ class GroupDetailView(DetailView):
         context['group_users'] = GroupUser.objects.filter(group=group)
         context['cash_transfers'] = TransferToMake.objects.filter(group=group)
         context['group_data'] = group
+        context['user_groups'] = Group.objects.filter(profile=self.request.user.profile)
 
         self.request.session['group_id'] = str(group.id)
         return context
