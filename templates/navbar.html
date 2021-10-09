@@ -11,19 +11,21 @@
 
                 <nav class="header__menu">
                 <ul>
-                    <li class=" groups__box ">
-                        <div class="groups__title ">
-                            <div class="custom-icon" style="background-image: url({% static 'media/users.svg' %}"></div>
-                            <div class="groups__title">Your groups</div>
-
-                        </div>
-                        <div class="groups__menu">
-                                <ul>
-                                    <li><a href="#">Group Name 1</a></li>
-                                    <li><a href="#">Group Name 2</a></li>
-                                </ul>
-                        </div>
-                    </li>
+                    {% if request.user.is_authenticated and nav_groups|length > 1 %}
+                        <li class=" groups__box ">
+                            <div class="groups__title ">
+                                <div class="custom-icon" style="background-image: url({% static 'media/users.svg' %}"></div>
+                                <div class="groups__title">Your groups</div>
+                            </div>
+                            <div class="groups__menu">
+                                    <ul>
+                                        {% for group in nav_groups %}
+                                            <li><a href="{% url 'detail' group.id %}">{{group.name}}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                            </div>
+                        </li>
+                    {% endif %}
 
                     <li><a href="{% url 'create-group' %}" class="custom-icon plus" style="background-image: url({% static 'media/plus.svg' %})"></a></li>
                     <li class="line"></li>

@@ -1,7 +1,6 @@
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from users.models import Profile
 
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -43,7 +42,7 @@ class GroupDetailView(DetailView):
         context['group_users'] = GroupUser.objects.filter(group=group)
         context['cash_transfers'] = TransferToMake.objects.filter(group=group)
         context['group_data'] = group
-        context['user_groups'] = Group.objects.filter(profile=self.request.user.profile)
+        context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
 
         self.request.session['group_id'] = str(group.id)
         return context
@@ -57,6 +56,7 @@ class GroupsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user_groups'] = Group.objects.filter(profile=self.request.user.profile)
+        context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
         return context
 
 
@@ -88,6 +88,11 @@ class GroupCreateView(CreateView):
     def get_success_url(self):
         group_id = self.request.session.get('group_id')
         return f'/groups/{group_id}'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
+        return context
 
 
 @method_decorator(login_required, name='dispatch')
@@ -141,6 +146,7 @@ class ExpenseCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['group_id'] = self.request.session.get('group_id')
+        context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
         return context
 
 
@@ -210,15 +216,16 @@ class ExpenseUpdateView(UpdateView):
 
         return HttpResponseRedirect(reverse('detail', args=[str(expense.group.id)]))
 
+    def get_success_url(self):
+        group_id = self.request.session.get('group_id')
+        return f'/groups/{group_id}'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['expense_comments'] = ExpenseComment.objects.filter(expense_id=self.kwargs['pk'])
         context['group_id'] = self.request.session.get('group_id')
+        context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
         return context
-
-    def get_success_url(self):
-        group_id = self.request.session.get('group_id')
-        return f'/groups/{group_id}'
 
 
 @method_decorator(login_required, name='dispatch')
@@ -239,6 +246,11 @@ class ExpenseDeleteView(DeleteView):
     def get_success_url(self):
         group_id = self.request.session.get('group_id')
         return f'/groups/{group_id}'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
+        return context
 
 
 @method_decorator(login_required, name='dispatch')
@@ -296,4 +308,5 @@ class SettleUpView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['group_id'] = self.request.session.get('group_id')
+        context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
         return context
