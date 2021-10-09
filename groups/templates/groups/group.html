@@ -15,7 +15,7 @@
                 <div class="item__title">Balances</div>
                 <ul>
                     {% for user in group_users %}
-                        <li>{{user.profile.username}}: {{user.balance}}zł</li>
+                        <li>{{user.profile.username}}: {{user.balance|stringformat:"g"}} zł</li>
                     {% endfor %}
                 </ul>
             </div>
@@ -32,7 +32,7 @@
                         <tr class="row">
                             <td>{{expense.paid_date|date:'d.m'}}</td>
                             <td>{{expense.title}}</td>
-                            <td>{{expense.price|stringformat:"g"}}zł</td>
+                            <td>{{expense.price|stringformat:"g"}} zł</td>
 
                             <td class = "cell">
                                 <button class="custom-icon"
@@ -59,12 +59,12 @@
                         {% if transfer.sender == user %}
                             <li>
                                 <span>{{transfer.sender.profile.username}} </span>
-                                owes {{transfer.amount}}zł to {{transfer.receiver.profile.username}}
+                                owes {{transfer.amount|stringformat:"g"}} zł to {{transfer.receiver.profile.username}}
                             </li>
                         {% elif transfer.receiver == user %}
                             <li class="green">
                                 <span>{{transfer.receiver.profile.username}} </span>
-                                gets back {{transfer.amount}}zł from {{transfer.sender.profile.username}}
+                                gets back {{transfer.amount|stringformat:"g"}} zł from {{transfer.sender.profile.username}}
                             </li>
                         {% endif %}
                     {% endfor %}
