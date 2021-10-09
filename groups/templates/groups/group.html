@@ -52,14 +52,23 @@
                 </table>
 
             </div>
-            <div class="main__content-item">
+            <div class="main__content-item transfers">
                 <div class="item__title">Money Transfers</div>
-                <ul>
+                 {% for user in group_users %}
                     {% for transfer in cash_transfers %}
-                        <li>{{transfer.sender.profile.full_name}} owes {{transfer.amount}}
-                            to {{transfer.receiver.profile.full_name}}</li>
+                        {% if transfer.sender == user %}
+                            <li>
+                                <span>{{transfer.sender.profile.username}} </span>
+                                owes {{transfer.amount}}zł to {{transfer.receiver.profile.username}}
+                            </li>
+                        {% elif transfer.receiver == user %}
+                            <li class="green">
+                                <span>{{transfer.receiver.profile.username}} </span>
+                                gets back {{transfer.amount}}zł from {{transfer.sender.profile.username}}
+                            </li>
+                        {% endif %}
                     {% endfor %}
-                </ul>
+                {% endfor %}
             </div>
         </div>
     </div>

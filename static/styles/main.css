@@ -294,10 +294,10 @@ li{
    cursor: pointer;
 }
 
-.balances {
+.transfers {
    color: #F15634;
 }
-.balances span{
+.transfers span{
    font-weight: bold;
    font-size: 14px;
 }
