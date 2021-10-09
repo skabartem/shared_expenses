@@ -38,7 +38,7 @@ class GroupDetailView(DetailView):
         group = Group.objects.get(id=self.kwargs['pk'])
 
         context['logged_user'] = self.request.user.profile
-        context['group_expenses'] = Expense.objects.filter(group=group)
+        context['group_expenses'] = Expense.objects.filter(group=group).order_by('-paid_date')
         context['group_users'] = GroupUser.objects.filter(group=group)
         context['cash_transfers'] = TransferToMake.objects.filter(group=group)
         context['group_data'] = group
