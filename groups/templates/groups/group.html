@@ -32,7 +32,7 @@
                         <tr class="row">
                             <td>{{expense.paid_date|date:'d.m'}}</td>
                             <td>{{expense.title}}</td>
-                            <td>{{expense.price}}zł</td>
+                            <td>{{expense.price|stringformat:"g"}}zł</td>
 
                             <td class = "cell">
                                 <button class="custom-icon"
