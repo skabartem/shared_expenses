@@ -30,7 +30,7 @@
                 <table class="main__table">
                     {% for expense in group_expenses %}
                         <tr class="row">
-                            <td>{{expense.created_at}}</td>
+                            <td>{{expense.paid_date|date:'d.m'}}</td>
                             <td>{{expense.title}}</td>
                             <td>{{expense.price}}zł</td>
 
