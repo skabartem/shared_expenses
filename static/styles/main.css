@@ -105,7 +105,7 @@ li{
 
 }
 .user__name::after{
-   content: url(media/arrow-down.svg);
+   content: url('/static/media/arrow-down.svg');
    position: absolute;
    right: 0px;
 }
