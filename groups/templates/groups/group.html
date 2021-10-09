@@ -15,7 +15,7 @@
                 <div class="item__title">Balances</div>
                 <ul>
                     {% for user in group_users %}
-                        <li>{{user.profile.full_name}}'s balance is {{user.balance}} PLN</li>
+                        <li>{{user.profile.username}}: {{user.balance}}zł</li>
                     {% endfor %}
                 </ul>
             </div>
