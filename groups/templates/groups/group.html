@@ -11,15 +11,23 @@
             </ul>
         </aside>
         <div class="main__content">
-            <div class="main__content-item">
+            <div class="main__content-item balances">
                 <div class="item__title">Balances</div>
-                <ul>
+                <ul class="balances">
                     {% for user in group_users %}
-                        <li>{{user.profile.username}}: {{user.balance|stringformat:"g"}} zł</li>
+                        {% if user.balance < 0 %}
+                            <li>
+                                <span>{{user.profile.username}}:</span> {{user.balance|stringformat:"g"}} zł
+                            </li>
+                        {% else %}
+                            <li class="green">
+                                <span>{{user.profile.username}}:</span> {{user.balance|stringformat:"g"}} zł
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>
-            <div class="main__content-item group__det">
+            <div class="group__det">
                <div class="item__header">
                     <div class="item__header-title">{{group_data.name}}</div>
                     <div class="buttons__box">
@@ -34,14 +42,14 @@
                             <td>{{expense.title}}</td>
                             <td>{{expense.price|stringformat:"g"}} zł</td>
 
-                            <td class = "cell">
+                            <td class="cell">
                                 <button class="custom-icon"
                                         onclick="location.href='{% url 'expense' expense.id %}'"
                                         style="background-image: url({% static 'media/edit-2.svg' %});">
                                 </button>
                             </td>
 
-                            <td class = "cell">
+                            <td class="cell">
                                 <button class="custom-icon"
                                         onclick="location.href='{% url 'delete-expense' expense.id %}'"
                                         style="background-image: url({% static 'media/trash-2.svg' %});">
@@ -51,9 +59,12 @@
                     {% endfor %}
                 </table>
 
+
+
             </div>
-            <div class="main__content-item transfers">
+            <div class="main__content-item balances">
                 <div class="item__title">Money Transfers</div>
+                <ul class="balances">
                  {% for user in group_users %}
                     {% for transfer in cash_transfers %}
                         {% if transfer.sender == user %}
@@ -69,6 +80,7 @@
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
