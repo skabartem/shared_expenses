@@ -59,7 +59,17 @@
                     {% endfor %}
                 </table>
 
-
+                <div class="container">
+                    <ul class="pagination">
+                      <li><a href="#" class="arrow" style="background-image: url({% static 'media/chevron-left.svg' %});"></a></li>
+                      <li class="current__page"><a href="#">1</a></li>
+                      <li><a href="#">2</a></li>
+                      <li><a href="#">3</a></li>
+                      <li><a href="#">4</a></li>
+                      <li><a href="#">5</a></li>
+                      <li><a href="#"class="arrow" style="background-image: url({% static 'media/chevron-right.svg' %});"></a></li>
+                    </ul>
+                </div>
 
             </div>
             <div class="main__content-item balances">
