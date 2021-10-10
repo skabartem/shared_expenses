@@ -22,6 +22,7 @@
                                         {% for group in nav_groups %}
                                             <li><a href="{% url 'detail' group.id %}">{{group.name}}</a></li>
                                         {% endfor %}
+                                            <li><a href="{% url 'user-groups' %}"class="all-groups">See all groups</a></li>
                                     </ul>
                             </div>
                         </li>
