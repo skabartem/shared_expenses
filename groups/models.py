@@ -74,3 +74,11 @@ class CashMovement(models.Model):
 
     def __str__(self):
         return f'{self.expense} | {self.group_user} | {self.balance_impact}'
+
+
+class Notification(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, unique=True)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    recipient = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    sent_date = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
