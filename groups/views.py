@@ -125,16 +125,18 @@ class ExpenseCreateView(CreateView):
             expense.group = group
             expense.created_by = GroupUser.objects.get(group=group, profile=self.request.user.profile)
 
+            comment_text = expense.comment
+            if comment_text:
+                expense.comment = None
             expense.save()
 
-            if expense.comment:
+            if comment_text:
                 ExpenseComment.objects.create(
                     group=expense.group,
                     created_by=expense.created_by,
-                    comment_text=expense.comment,
+                    comment_text=comment_text,
                     expense=expense
                 )
-                expense.comment = None
 
             expense_form.save_m2m()
 
