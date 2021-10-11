@@ -91,6 +91,7 @@ class GroupCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['logged_user'] = self.request.user.profile
         context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
         return context
 
@@ -146,6 +147,7 @@ class ExpenseCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['group_id'] = self.request.session.get('group_id')
+        context['logged_user'] = self.request.user.profile
         context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
         return context
 
@@ -224,6 +226,7 @@ class ExpenseUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['expense_comments'] = ExpenseComment.objects.filter(expense_id=self.kwargs['pk'])
         context['group_id'] = self.request.session.get('group_id')
+        context['logged_user'] = self.request.user.profile
         context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
         return context
 
@@ -249,6 +252,7 @@ class ExpenseDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['logged_user'] = self.request.user.profile
         context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
         return context
 
@@ -308,5 +312,6 @@ class SettleUpView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['group_id'] = self.request.session.get('group_id')
+        context['logged_user'] = self.request.user.profile
         context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
         return context
