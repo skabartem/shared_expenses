@@ -125,6 +125,8 @@ class ExpenseCreateView(CreateView):
             expense.group = group
             expense.created_by = GroupUser.objects.get(group=group, profile=self.request.user.profile)
 
+            expense.save()
+
             if expense.comment:
                 ExpenseComment.objects.create(
                     group=expense.group,
@@ -133,7 +135,7 @@ class ExpenseCreateView(CreateView):
                     expense=expense
                 )
                 expense.comment = None
-            expense.save()
+
             expense_form.save_m2m()
 
             track_cash_movements(expense, expense.split_with.all())
