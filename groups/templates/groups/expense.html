@@ -14,16 +14,13 @@
                     <div class="form__group">
                         <label for="title"> Title</label>
                         {{form.title}}
-<!--                        <input type="text" id="title">-->
                     </div>
                     <div class="form__group">
-<!--                        <input type="text" id="price">-->
                         {{form.price}}
                         <label for="price">Price</label>
                     </div>
                     <div class="form__group">
                         <label for="date"> Date</label>
-<!--                        <input type="text" id="date">-->
                         {{form.paid_date}}
                     </div>
                 </div>
@@ -60,7 +57,6 @@
                     Back to group
                 </button>
 
-
             </div>
         </form>
 
@@ -68,19 +64,3 @@
 </section>
 
 {% endblock %}
-
-<h2>Expense</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
-
-<a href="{% url 'detail' group_id %}">Back to group</a>
-
-{% if expense_comments %}
-    <h3>Expense comments</h3>
-    {% for comment in expense_comments %}
-        <p>{{comment}}</p>
-    {% endfor %}
-{% endif %}
