@@ -33,7 +33,7 @@ class TransferToMake(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
-        return f'{self.group} | {self.sender.profile} owes {self.amount} to {self.receiver.profile}'
+        return f'{self.sender.profile} owes {self.amount} to {self.receiver.profile}'
 
 
 class Expense(models.Model):
@@ -50,7 +50,7 @@ class Expense(models.Model):
     comment = models.TextField(max_length=500, null=True, blank=True)
 
     def __str__(self):
-        return f'{self.price} PLN | {self.title}'
+        return self.title
 
 
 class ExpenseComment(models.Model):
@@ -62,18 +62,12 @@ class ExpenseComment(models.Model):
 
     expense = models.ForeignKey(Expense, on_delete=models.CASCADE, blank=True, null=True)
 
-    def __str__(self):
-        return f'{self.group} | {self.comment_text}'
-
 
 class CashMovement(models.Model):
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, unique=True)
     group_user = models.ForeignKey(GroupUser, on_delete=models.CASCADE, null=True)
     expense = models.ForeignKey(Expense, on_delete=models.CASCADE, blank=True, null=True)
     balance_impact = models.FloatField(null=True)
-
-    def __str__(self):
-        return f'{self.expense} | {self.group_user} | {self.balance_impact}'
 
 
 class Notification(models.Model):
