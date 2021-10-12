@@ -53,10 +53,17 @@
             </div>
 
             <div class="right__content">
+
                 <div class="expence__img" style="background-image: url({% static 'media/Teamwork.png' %});"></div>
                 <button type="submit" class="custom__btn">Submit</button>
+                <button onclick="location.href='{% url 'detail' group_id %}'" type="button" class="custom__btn">
+                    Back to group
+                </button>
+
+
             </div>
         </form>
+
     </div>
 </section>
 
