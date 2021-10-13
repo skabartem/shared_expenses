@@ -166,7 +166,7 @@ li{
    color: #898888;
    font-size: 18px;
    line-height: 22px;
-   min-width: 150px; 
+   min-width: 150px;
 }
 .groups__title{
    color: #7B85E0;
@@ -275,7 +275,7 @@ li{
    text-align: center;
 }
 .main__table{
-   border-collapse:separate; 
+   border-collapse:separate;
    border-spacing: 1em 1.5em;
 }
 .main__table tr{
@@ -483,7 +483,7 @@ textarea
    box-shadow: none;
    font-size: 12px;
    text-align: start;
-   
+
 }
 .form__menu li + li{
    margin-top: 0;
@@ -529,4 +529,16 @@ textarea
 }
 .tooltip:hover .tooltiptext {
    visibility: visible;
- }
+
+}
+.expence .main__content-item{
+   background: #fff;
+   margin: 50px 0;
+   padding:25px;
+   border-radius: 25px;
+   box-shadow: 4px 4px 8px rgba(56, 70, 200, 0.14);
+   margin-left: 30px;
+}
+.expence .main__content-item span{
+   font-weight: 600;
+}

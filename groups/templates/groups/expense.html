@@ -57,6 +57,16 @@
 
             </div>
         </form>
+        {% if expense_comments %}
+        <div class="main__content-item">
+            <div class="item__title"> Comments</div>
+            <ul>
+                {% for comment in expense_comments %}
+                <li><span>{{comment.created_by}}: </span>{{comment.comment_text}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
 
     </div>
 </section>
