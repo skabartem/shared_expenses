@@ -12,7 +12,7 @@ from django.utils.decorators import method_decorator
 
 from django.db.models import Q
 
-from groups.models import Group, GroupUser, Expense, ExpenseComment, TransferToMake, CashMovement
+from groups.models import *
 from .forms import ExpenseForm, SettleUpForm
 from .utils import track_cash_movements
 
@@ -141,6 +141,13 @@ class ExpenseCreateView(CreateView):
             expense_form.save_m2m()
 
             track_cash_movements(expense, expense.split_with.all())
+
+            for user in expense.split_with.all():
+                Notification.objects.create(
+                    group=expense.group,
+                    recipient=user.profile,
+                    read=False,
+                )
 
         return HttpResponseRedirect(reverse('detail', args=[str(expense.group.id)]))
 
