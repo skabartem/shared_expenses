@@ -78,3 +78,6 @@ class Notification(models.Model):
     read = models.BooleanField(default=False)
 
     text = models.CharField(max_length=100, default='New expense was added')
+
+    def __str__(self):
+        return f'{self.text} to {self.group}'
