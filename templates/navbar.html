@@ -11,7 +11,7 @@
 
                 <nav class="header__menu">
                 <ul>
-                    {% if request.user.is_authenticated and nav_groups|length > 1 %}
+                    {% if request.user.is_authenticated %}
                         <li class=" groups__box ">
                             <div class="groups__title ">
                                 <div class="custom-icon" style="background-image: url({% static 'media/users.svg' %}"></div>
@@ -22,7 +22,7 @@
                                         {% for group in nav_groups %}
                                             <li><a href="{% url 'detail' group.id %}">{{group.name}}</a></li>
                                         {% endfor %}
-                                            <li><a href="{% url 'user-groups' %}"class="all-groups">See all groups</a></li>
+                                            <li><a href="{% url 'user-groups' %}"class="all-groups">all groups</a></li>
                                     </ul>
                             </div>
                         </li>
