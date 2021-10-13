@@ -76,3 +76,5 @@ class Notification(models.Model):
     recipient = models.ForeignKey(Profile, on_delete=models.CASCADE)
     sent_date = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)
+
+    text = models.CharField(max_length=100, default='New expense was added')
