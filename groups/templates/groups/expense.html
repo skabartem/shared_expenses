@@ -27,8 +27,8 @@
                 <div class="form__item">
 
                     <div class="form__box">
-                        <div class="form__group">
-                            <label>{{form.paid_by.label}}</label>
+                        <div class="form__group tooltip">
+                            <span class="tooltiptext">Paid by</span>
                             {{form.paid_by}}
                         </div>
                     </div>
@@ -51,11 +51,9 @@
 
             <div class="right__content">
 
+                <button class=" custom-icon exit" style="background-image: url({% static 'media/x.svg' %});"></button>
                 <div class="expence__img" style="background-image: url({% static 'media/Teamwork.png' %});"></div>
                 <button type="submit" class="custom__btn">Submit</button>
-                <button onclick="location.href='{% url 'detail' group_id %}'" type="button" class="custom__btn">
-                    Back to group
-                </button>
 
             </div>
         </form>

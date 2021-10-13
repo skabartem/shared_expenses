@@ -1,4 +1,3 @@
-{% load static %}
 html {
    box-sizing: border-box;
 }
@@ -76,7 +75,7 @@ li{
    cursor: pointer;
    min-width: 240px;
    height: 30px;
-
+   
 }
 .groups__box:hover > .groups__menu, .user__box:hover > .user__menu , .form__box:hover > .form__menu{
    height: auto;
@@ -167,7 +166,7 @@ li{
    color: #898888;
    font-size: 18px;
    line-height: 22px;
-   min-width: 150px;
+   min-width: 150px; 
 }
 .groups__title{
    color: #7B85E0;
@@ -276,7 +275,7 @@ li{
    text-align: center;
 }
 .main__table{
-   border-collapse:separate;
+   border-collapse:separate; 
    border-spacing: 1em 1.5em;
 }
 .main__table tr{
@@ -350,7 +349,7 @@ li{
 .green {
    color: #0BCB2A;
 }
-/* expance section */
+/* expence section */
 
 .expence .main__wrapper{
    background:#EEEFFB;
@@ -364,11 +363,18 @@ li{
    box-shadow: 4px 4px 8px rgba(56, 70, 200, 0.14);
    display: flex;
    justify-content: space-between;
+   max-height: 530px;
 }
 .right__content{
    align-items: center;
    text-align: center;
    padding: 5px 10px;
+   position: relative;
+}
+.exit{
+   position: absolute;
+   right: 0;
+   cursor: pointer;
 }
 .expence__img{
    background-repeat: no-repeat;
@@ -447,7 +453,10 @@ textarea
    line-height: 29px;
    margin-top: 15px;
    padding: 0 7px;
+   cursor: pointer;
 }
+
+
 .input__title{
    color: #3846C8;
    font-size: 24px;
@@ -464,7 +473,6 @@ textarea
    width: 17px;
    height: 17px;
    background-size: cover;
-
    background-image: url(/static/media/arrow-down.svg);
    background-repeat: no-repeat;
 }
@@ -475,7 +483,7 @@ textarea
    box-shadow: none;
    font-size: 12px;
    text-align: start;
-
+   
 }
 .form__menu li + li{
    margin-top: 0;
@@ -497,3 +505,28 @@ textarea
    min-height: 76px;
    bottom: 0;
 }
+.tooltip{
+   position: relative;
+}
+.tooltip .tooltiptext{
+   visibility: hidden;
+   background: #fff;
+   width: 200px;
+   border-radius: 8px;
+   border: none;
+   color: #3846C8;
+   font-size: 24px;
+   line-height: 29px;
+   margin-top: 15px;
+   padding: 0 10px;
+   font-weight: 400;
+   text-align: start;
+   position: absolute;
+   padding:  2px 7px;
+   top: 0;
+   left: 0;
+   z-index: 1;
+}
+.tooltip:hover .tooltiptext {
+   visibility: visible;
+ }
