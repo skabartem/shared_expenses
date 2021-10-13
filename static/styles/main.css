@@ -351,7 +351,7 @@ li{
 }
 /* expence section */
 
-.expence .main__wrapper{
+.expence .main__wrapper, .settle__up .main__wrapper{
    background:#EEEFFB;
    justify-content: center;
 }
@@ -541,4 +541,14 @@ textarea
 }
 .expence .main__content-item span{
    font-weight: 600;
+}
+.settle__up-form{
+   display: block;
+   background-position: center;
+   background-size: cover;
+   background-repeat: no-repeat;
+}
+.settle__up-form .form__title{
+   text-align: center;
+   margin-bottom: 70px;
 }
