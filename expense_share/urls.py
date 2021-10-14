@@ -16,9 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from users.views import WelcomePage
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('groups/', include('groups.urls')),
-    path('accounts/', include('users.urls'))
+    path('accounts/', include('users.urls')),
+
+    path('', WelcomePage.as_view(), name='welcome'),
 ]

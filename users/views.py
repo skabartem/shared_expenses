@@ -1,6 +1,6 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, TemplateView
 from users.forms import SignUpForm, ProfileForm
 from .models import Profile
 from django.contrib.auth import login, logout
@@ -9,6 +9,14 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from django.http import HttpResponseRedirect
+
+
+class WelcomePage(TemplateView):
+    template_name = 'users/welcome-page.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 class UserLogin(LoginView):
