@@ -16,6 +16,8 @@ from groups.models import *
 from .forms import ExpenseForm, SettleUpForm
 from .utils import track_cash_movements
 
+from datetime import datetime
+
 
 @method_decorator(login_required, name='dispatch')
 class GroupDetailView(DetailView):
@@ -112,6 +114,7 @@ class ExpenseCreateView(CreateView):
         form.fields['paid_by'].queryset = group_users
         form.fields['split_with'].queryset = group_users
         # pre_fill form
+        form.fields['paid_date'].initial = datetime.now().strftime('%Y-%m-%d %H:%M')
         form.fields['paid_by'].initial = GroupUser.objects.get(group=group, profile=self.request.user.profile)
         form.fields['split_with'].initial = group_users
         return form
