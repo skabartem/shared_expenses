@@ -16,6 +16,12 @@ SLASH is a web app built on Django. It's focused on user experience and helps to
 ![](readme/add-expense.gif)
 ### Edit Expense
 ![](readme/edit-expense.gif)
+### Settle-up
+In order to track the spengings and their coverage, all the users can to settle-up user balances. To recycle existing code settle-up form generates new Expense object which corrects the balances.
+
+The form is already pre-filled with the next priority: logged user debts -> logged user lendings -> other user transfers -> blank form
+
+![](readme/settle-up.gif)
 ---
 
 ### Django specifics
