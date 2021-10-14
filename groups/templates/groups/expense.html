@@ -50,8 +50,7 @@
             </div>
 
             <div class="right__content">
-
-                <button class=" custom-icon exit" style="background-image: url({% static 'media/x.svg' %});"></button>
+                <a class="custom-icon exit" href="{% url 'detail' group_id %}" style="background-image: url({% static 'media/x.svg' %});"></a>
                 <div class="expence__img" style="background-image: url({% static 'media/Teamwork.png' %});"></div>
                 <button type="submit" class="custom__btn">Submit</button>
 
