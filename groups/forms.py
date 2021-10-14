@@ -3,6 +3,8 @@ from .models import Expense, GroupUser
 
 
 class ExpenseForm(forms.ModelForm):
+    paid_date = forms.DateTimeField(widget=forms.DateTimeInput(format='%Y-%m-%d %H:%M'))
+
     class Meta:
         model = Expense
         fields = [
