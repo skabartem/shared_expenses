@@ -293,6 +293,7 @@ class SettleUpView(CreateView):
         if first_transfer is None:
             first_transfer = TransferToMake.objects.filter(group=group).first()
         if first_transfer is not None:
+            form.fields['paid_date'].initial = datetime.now().strftime('%Y-%m-%d %H:%M')
             form.fields['paid_by'].initial = first_transfer.sender
             form.fields['paid_to'].initial = first_transfer.receiver
             form.fields['price'].initial = first_transfer.amount
