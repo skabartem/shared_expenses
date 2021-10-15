@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, TemplateView
 from users.forms import SignUpForm, ProfileForm
 from .models import Profile
+from groups.models import Group
 from django.contrib.auth import login, logout
 
 from django.contrib.auth.decorators import login_required
@@ -11,11 +12,14 @@ from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 
 
+@method_decorator(login_required, name='dispatch')
 class WelcomePage(TemplateView):
     template_name = 'users/welcome-page.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        context['group'] = Group.objects.filter(profile=self.request.user.profile).first()
         return context
 
 

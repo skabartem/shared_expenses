@@ -188,44 +188,101 @@ li{
    background:#EEEFFB;
 
 }
-.main__wrapper{
+.main .main__wrapper,
+.expence .main__wrapper,
+.settle__up .main__wrapper{
    display: flex;
-   height:calc(100vh - 60px)
+   height:calc(100vh - 60px);
+   background: #fff;
 }
 .side__bar{
    background: #fff;
-   width: 90px;
-   margin-right: 20px;
+   width: 350px;
+   box-shadow: inset 0px 4px 7px rgba(56, 70, 200, 0.14);
+   padding: 15px;
+
 }
 .side__bar ul{
-   margin-top: 50px;
+   margin-top: 10px;
 }
+
 .side__bar li {
    display: block;
    position: relative;
-   padding-left: 14px;
+   padding: 14px;
+   box-shadow: 0px 4px 8px rgba(101, 104, 129, 0.14);
+   height: fit-content;
+   border-radius: 15px;
+}
+.side__bar li:first-child{
+   padding: 10px 0;
 }
 .side__bar li+li{
-   margin-top: 30px;
+   margin-top: 20px;
 }
-
-.side__bar-icon{
-   width: 45px;
-   height: 45px;
+.side__bar a{
+   font-size: 18px;
+   color: #898888;
+   width: 100%;
 }
 .active{
    position: absolute;
    width: 7px;
-   height: 45px;
+   height: 100%;
    background-color: #7B85E0;
-   left:0;
+   left:-14px;
+   top: 0;
+}
+.form__li{
+   box-shadow: none;
+}
+.search__form {
+   position: relative;
+   font-size: 18px;
+}
+
+.search__form input{
+   display: block;
+   width: 100%;
+   outline: none;
+   border: none;
+   cursor: pointer;
+   background: transparent;
+   padding: 8px 18px;
+   text-align: start;
+   color: #7B85E0;
+
+}
+
+.search__form input::placeholder{
+   color: #7B85E0;
+   font-size: 18px;
+}
+.search__form button{
+   outline: none;
+   border: none;
+   cursor: pointer;
+   position: absolute;
+   top: 0;
+   right: 0;
+   background: #fff;
+   padding: 5px;
+   border-radius: 50%;
+   
+
+}
+.search__form button img{
+   width: 25px;
+   height: 25px;
+   margin-right: 10px;
 }
 .main__content{
-
+   background:#EEEFFB;
    padding: 50px 35px;
    display: flex;
    justify-content: space-between;
    width: 100%;
+   box-shadow: 0px 4px 8px rgba(56, 70, 200, 0.14);
 }
 .main__content-item, .group__det{
    width: fit-content;

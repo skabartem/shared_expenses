@@ -16,7 +16,7 @@
         <div class="welcome__wrapper">
             <div class="left">
             <h1>Welcome to SLASH</h1>
-            <a href="{% url 'user-groups' %}" class="custom__btn">Go to my groups</a>
+            <a href="{% url 'detail' group.id %}" class="custom__btn">Go to my groups</a>
             <a href="{% url 'create-group' %}" class="custom__btn">Create new group</a>
             </div>
         <div class="welcome__img" style="background-image: url({% static 'media/welcome.png' %});"></div>

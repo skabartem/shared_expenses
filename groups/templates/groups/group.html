@@ -6,8 +6,21 @@
     <div class="main__wrapper">
         <aside class="side__bar">
             <ul>
-                <li><span class="active"></span><a href="#" class="custom-icon side__bar-icon" style="background-image: url({% static 'media/right.svg' %});"></a></li>
-                <li><span ></span><a href="#" class="custom-icon side__bar-icon" style="background-image: url({% static 'media/info.svg' %});"></a></li>
+                <li class="form__li">
+                    <form action="" class="search__form">
+                    <input type="text" placeholder = "Search group ...">
+                    <button type="submit"><img src="{% static 'media/search.png' %}" alt=""></button>
+                    </form>
+                 </li>
+                <li>
+                    <span class="active"></span>
+                    <a href="{% url 'detail' current_group.id %}" class="groups__a">{{current_group}}</a>
+                </li>
+                {% if other_groups %}
+                    {% for group in other_groups %}
+                        <li><a href="{% url 'detail' group.id %}"class="groups__a">{{group.name}}</a></li>
+                    {% endfor %}
+                {% endif %}
             </ul>
         </aside>
         <div class="main__content">

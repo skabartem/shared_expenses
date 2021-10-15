@@ -2,8 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.GroupsListView.as_view(), name="user-groups"),
-
     path('settle-up/', views.SettleUpView.as_view(), name="settle-up"),
     path('add-expense/', views.ExpenseCreateView.as_view(), name="add-expense"),
     path('expense/<str:pk>/', views.ExpenseUpdateView.as_view(), name="expense"),

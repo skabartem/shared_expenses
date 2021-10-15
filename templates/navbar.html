@@ -4,30 +4,13 @@
         <div class="container">
             <div class="header__inner">
                 <div class="header__logo">
-                 <a href="{% url 'user-groups' %}">
+                 <a href="{% url 'welcome' %}">
                 Slash
                 </a>
                 </div>
 
                 <nav class="header__menu">
                 <ul>
-                    {% if request.user.is_authenticated %}
-                        <li class=" groups__box ">
-                            <div class="groups__title ">
-                                <div class="custom-icon" style="background-image: url({% static 'media/users.svg' %}"></div>
-                                <div class="groups__title">Your groups</div>
-                            </div>
-                            <div class="groups__menu">
-                                    <ul>
-                                        {% for group in nav_groups %}
-                                            <li><a href="{% url 'detail' group.id %}">{{group.name}}</a></li>
-                                        {% endfor %}
-                                            <li><a href="{% url 'user-groups' %}"class="all-groups">all groups</a></li>
-                                    </ul>
-                            </div>
-                        </li>
-                    {% endif %}
-
                     <li><a href="{% url 'create-group' %}" class="custom-icon plus" style="background-image: url({% static 'media/plus.svg' %})"></a></li>
                     <li class="line"></li>
                     <li><a href="#"class="custom-icon bell"style="background-image: url({% static 'media/bell.svg' %})"><span></span></a></li>
@@ -38,10 +21,10 @@
 
                         </div>
                         <div class="user__menu  groups__menu">
-                                <ul>
-                                    <li><a href="{% url 'profile' logged_user.id %}">Profile</a></li>
-                                    <li><a href="{% url 'logout-user' %}">Logout</a></li>
-                                </ul>
+                            <ul>
+                                <li><a href="{% url 'profile' logged_user.id %}">Profile</a></li>
+                                <li><a href="{% url 'logout-user' %}">Logout</a></li>
+                            </ul>
                         </div>
                     </li>
                 </ul>

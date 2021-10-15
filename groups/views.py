@@ -1,5 +1,4 @@
 from django.views.generic.detail import DetailView
-from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.urls import reverse
@@ -46,19 +45,17 @@ class GroupDetailView(DetailView):
         context['group_data'] = group
         context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
 
+        user_groups = Group.objects.filter(profile=self.request.user.profile)
+        if self.kwargs['pk']:
+            current_group = Group.objects.get(id=self.kwargs['pk'])
+        else:
+            current_group = user_groups.first()
+        other_groups = user_groups.exclude(id=current_group.id)
+
+        context['current_group'] = current_group
+        context['other_groups'] = other_groups
+
         self.request.session['group_id'] = str(group.id)
-        return context
-
-
-@method_decorator(login_required, name='dispatch')
-class GroupsListView(ListView):
-    model = Group
-    template_name = 'groups/user-groups.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['user_groups'] = Group.objects.filter(profile=self.request.user.profile)
-        context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
         return context
 
 
