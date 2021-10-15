@@ -166,7 +166,7 @@ li{
    color: #898888;
    font-size: 18px;
    line-height: 22px;
-   min-width: 150px;
+   min-width: 150px; 
 }
 .groups__title{
    color: #7B85E0;
@@ -275,7 +275,7 @@ li{
    text-align: center;
 }
 .main__table{
-   border-collapse:separate;
+   border-collapse:separate; 
    border-spacing: 1em 1.5em;
 }
 .main__table tr{
@@ -483,7 +483,7 @@ textarea
    box-shadow: none;
    font-size: 12px;
    text-align: start;
-
+   
 }
 .form__menu li + li{
    margin-top: 0;
@@ -529,7 +529,7 @@ textarea
 }
 .tooltip:hover .tooltiptext {
    visibility: visible;
-
+   
 }
 .expence .main__content-item{
    background: #fff;
@@ -556,16 +556,21 @@ textarea
 .welcome, .confirmation{
    display: flex;
    justify-content: center;
-   height: 100vh;
    width: 100%;
    background: #fff;
+   min-height: 100vh;
+   position: relative;
 }
 .welcome__wrapper{
    max-width: 1200px;
    display: flex;
    justify-content: space-between;
    padding: 40px;
-
+   margin: 0;
+   position: absolute;
+   top: 50%;
+   -ms-transform: translateY(-50%);
+   transform: translateY(-50%);
 }
 .welcome__img{
    background-position: center;
@@ -574,7 +579,7 @@ textarea
    width: 571px;
    height: 567px;
    margin-left: 25px;
-
+   
 }
 .left{
    width: 480px;
@@ -598,7 +603,7 @@ textarea
    background: #7B85E0;
 }
 .confirmation .welcome__img{
-   margin-right: 0;
+   margin-right: 10em;
 }
 .confirmation .left{
    background: #fff;

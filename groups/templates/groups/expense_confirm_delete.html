@@ -13,8 +13,8 @@
 </head>
 <body>
     <section class="confirmation">
-        <div class="welcome__img" style="background-image: url({% static 'media/Stop.png' %});"></div>
         <form class="welcome__wrapper" method="post">
+            <div class="welcome__img" style="background-image: url({% static 'media/Stop.png' %});"></div>
             {% csrf_token %}
             <div class="left">
             <h1>Are you sure?</h1>
