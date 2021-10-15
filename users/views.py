@@ -23,7 +23,7 @@ class UserLogin(LoginView):
     template_name = 'users/login.html'
 
     def get_success_url(self):
-        return reverse_lazy('user-groups')
+        return reverse_lazy('welcome')
 
 
 @method_decorator(login_required, name='dispatch')
