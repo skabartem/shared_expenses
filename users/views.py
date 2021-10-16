@@ -19,7 +19,11 @@ class WelcomePage(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['group'] = Group.objects.filter(profile=self.request.user.profile).first()
+        user_groups = Group.objects.filter(profile=self.request.user.profile)
+        if user_groups:
+            context['group'] = user_groups.first()
+        else:
+            context['group'] = None
         return context
 
 
