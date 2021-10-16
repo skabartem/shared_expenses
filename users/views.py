@@ -1,7 +1,7 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, TemplateView
-from users.forms import SignUpForm, ProfileForm
+from users.forms import LoginForm, SignUpForm, ProfileForm
 from .models import Profile
 from groups.models import Group
 from django.contrib.auth import login, logout
@@ -24,6 +24,7 @@ class WelcomePage(TemplateView):
 
 
 class UserLogin(LoginView):
+    form_class = LoginForm
     template_name = 'users/login.html'
 
     def get_success_url(self):

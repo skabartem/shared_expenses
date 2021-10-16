@@ -703,12 +703,12 @@ textarea
    justify-content: end;
 }
 .sign__up-img{
-   width: 550px;
-   height: 430px;
+   width: 650px;
+   height: 530px;
    z-index: 100;
    position: absolute;
    left: -55%;
-   top: 30% 
+   top: 20% 
 }
 .sign__up-form{
    position: absolute;
@@ -723,7 +723,7 @@ textarea
    line-height: 59px;
    text-align: center;
    margin: 0 auto;
-   padding-top: 25px;
+   padding-top: 35px;
    width: 270px;
 }
 .text__container{
@@ -766,5 +766,25 @@ textarea
    letter-spacing: 1.5px;
 }
 .sign__up-form .custom__btn{
-   margin-top: 70px;
+   margin-top: 80px;
+}
+.login{
+   justify-content: start;
+}
+.login .sign__up-right{
+   border-radius: 0 70px 70px 0;
+}
+.login .sign__up-title{
+   left: auto;
+   right: -75%;
+}
+.login .sign__up-right{
+   justify-content: start;
+}
+.login .sign__up-img{
+   left: auto;
+   right: -50%;
+}
+.login .text__container{
+   margin-bottom: 150px;
 }
