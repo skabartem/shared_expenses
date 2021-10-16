@@ -6,6 +6,7 @@
     <div class="main__wrapper">
         <form method="POST" class="form settle__up-form" style="background-image: url({% static 'media/settle-up.png' %});">
             {% csrf_token %}
+            <a class="custom-icon exit" href="{% url 'detail' group_id %}" style="background-image: url({% static 'media/x.svg' %});"></a>
             <div class="form__title">Settle Up</div>
 
             <div class="form__item" style="border-bottom: none;">
