@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Profile
 
+
 # Sign Up Form
 class SignUpForm(UserCreationForm):
     class Meta:
@@ -13,6 +14,16 @@ class SignUpForm(UserCreationForm):
             'password1',
             'password2',
             ]
+
+        widgets = {
+            'username': forms.TextInput(attrs={'placeholder': 'Username'}),
+            'email': forms.TextInput(attrs={'placeholder': 'Email Address'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(SignUpForm, self).__init__(*args, **kwargs)
+        self.fields['password1'].widget = forms.PasswordInput(attrs={'placeholder': 'Password'})
+        self.fields['password2'].widget = forms.PasswordInput(attrs={'placeholder': 'Password confirmation'})
 
 
 # Profile Form
