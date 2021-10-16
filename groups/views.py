@@ -46,14 +46,8 @@ class GroupDetailView(DetailView):
         context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
 
         user_groups = Group.objects.filter(profile=self.request.user.profile)
-        if self.kwargs['pk']:
-            current_group = Group.objects.get(id=self.kwargs['pk'])
-        else:
-            current_group = user_groups.first()
-        other_groups = user_groups.exclude(id=current_group.id)
-
-        context['current_group'] = current_group
-        context['other_groups'] = other_groups
+        context['current_group_id'] = group.id
+        context['user_groups'] = user_groups
 
         self.request.session['group_id'] = str(group.id)
         return context

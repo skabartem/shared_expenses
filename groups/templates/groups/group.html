@@ -12,15 +12,16 @@
                     <button type="submit"><img src="{% static 'media/search.png' %}" alt=""></button>
                     </form>
                  </li>
-                <li>
-                    <span class="active"></span>
-                    <a href="{% url 'detail' current_group.id %}" class="groups__a">{{current_group}}</a>
-                </li>
-                {% if other_groups %}
-                    {% for group in other_groups %}
+                {% for group in user_groups %}
+                    {% if current_group_id == group.id %}
+                        <li>
+                            <span class="active"></span>
+                            <a href="{% url 'detail' group.id %}" class="groups__a">{{group}}</a>
+                        </li>
+                    {% else %}
                         <li><a href="{% url 'detail' group.id %}"class="groups__a">{{group.name}}</a></li>
-                    {% endfor %}
-                {% endif %}
+                    {% endif %}
+                {% endfor %}
             </ul>
         </aside>
         <div class="main__content">
