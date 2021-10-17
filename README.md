@@ -12,6 +12,8 @@ SLASH is a web app built on Django. It's focused on user experience and helps to
 - Create/Update/Delete Group expense
 - Track User balances
 - Organize Money Transfers
+### Login/Register
+![](readme/login.gif)
 ### Create expense
 ![](readme/add-expense.gif)
 ### Edit Expense
