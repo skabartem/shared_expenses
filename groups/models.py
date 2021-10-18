@@ -10,7 +10,7 @@ class Group(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     name = models.CharField(null=True, max_length=100)
     group_users = models.ManyToManyField(Profile, through='GroupUser')
-    last_update = models.DateTimeField(null=True)
+    last_update = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name

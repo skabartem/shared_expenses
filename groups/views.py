@@ -25,7 +25,7 @@ class GroupDetailView(DetailView):
 
     def dispatch(self, request, *args, **kwargs):
         group = Group.objects.get(id=self.kwargs['pk'])
-
+        print(group.last_update)
         # check permission
         try:
             GroupUser.objects.get(group=group, profile=self.request.user.profile)
@@ -124,6 +124,9 @@ class ExpenseCreateView(CreateView):
                 expense.comment = None
             expense.save()
 
+            group.last_update = datetime.now()
+            group.save()
+
             if comment_text:
                 ExpenseComment.objects.create(
                     group=expense.group,
@@ -200,6 +203,9 @@ class ExpenseUpdateView(UpdateView):
 
         expense.save()
         form.save_m2m()
+
+        expense.group.last_update = datetime.now()
+        expense.group.save()
 
         '''
         CHECK IF THERE IS same_price, same_lander, same_borrowers AFTER THE UPDATE
@@ -307,6 +313,9 @@ class SettleUpView(CreateView):
             settlement.save()
             settlement.split_with.set([paid_to])
             settlement_form.save_m2m()
+
+            group.last_update = datetime.now()
+            group.save()
 
             track_cash_movements(settlement, settlement.split_with.all())
 
