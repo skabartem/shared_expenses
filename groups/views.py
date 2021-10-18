@@ -25,7 +25,7 @@ class GroupDetailView(DetailView):
 
     def dispatch(self, request, *args, **kwargs):
         group = Group.objects.get(id=self.kwargs['pk'])
-        print(group.last_update)
+
         # check permission
         try:
             GroupUser.objects.get(group=group, profile=self.request.user.profile)
@@ -43,9 +43,8 @@ class GroupDetailView(DetailView):
         context['group_users'] = GroupUser.objects.filter(group=group)
         context['cash_transfers'] = TransferToMake.objects.filter(group=group)
         context['group_data'] = group
-        context['nav_groups'] = Group.objects.filter(profile=self.request.user.profile)[:4]
 
-        user_groups = Group.objects.filter(profile=self.request.user.profile)
+        user_groups = Group.objects.filter(profile=self.request.user.profile).order_by('-last_update')
         context['current_group_id'] = group.id
         context['user_groups'] = user_groups
 

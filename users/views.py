@@ -19,7 +19,7 @@ class WelcomePage(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        user_groups = Group.objects.filter(profile=self.request.user.profile)
+        user_groups = Group.objects.filter(profile=self.request.user.profile).order_by('-last_update')
         if user_groups:
             context['group'] = user_groups.first()
         else:
