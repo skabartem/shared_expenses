@@ -73,17 +73,27 @@
                     {% endfor %}
                 </table>
 
-                <div class="container">
-                    <ul class="pagination">
-                      <li><a href="#" class="arrow" style="background-image: url({% static 'media/chevron-left.svg' %});"></a></li>
-                      <li class="current__page"><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                      <li><a href="#"class="arrow" style="background-image: url({% static 'media/chevron-right.svg' %});"></a></li>
-                    </ul>
-                </div>
+                {% if group_expenses.has_other_pages %}
+                    <div class="container">
+                        <ul class="pagination">
+                            {% if group_expenses.has_previous %}
+                                <li><a href="?page={{group_expenses.previous_page_number}}" data-page="{{page}}" class="arrow" style="background-image: url({% static 'media/chevron-left.svg' %});"></a></li>
+                            {% endif %}
+
+                            {% for page in custom_range %}
+                                {% if page == group_expenses.number %}
+                                    <li class="current__page"><a href=href="?page={{page}}" data-page="{{page}}">{{page}}</a></li>
+                                {% else %}
+                                    <li><a href="?page={{page}}" data-page="{{page}}">{{page}}</a></li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if group_expenses.has_next %}
+                                <li><a href="?page={{group_expenses.next_page_number}}" data-page="{{page}}" class="arrow" style="background-image: url({% static 'media/chevron-right.svg' %});"></a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                {% endif %}
 
             </div>
             <div class="main__content-item balances">
@@ -109,5 +119,31 @@
         </div>
     </div>
 </section>
+
+<script type="text/javascript">
+    //GET SEARCH FORM AND PAGE LINKS
+    let searchForm = document.getElementById('searchForm')
+    let pageLinks = document.getElementsByClassName('page-link')
+
+    //ENSURE SEARCH FORM EXISTS
+    if (searchForm) {
+        for (let i = 0; pageLinks.length > i; i++) {
+            pageLinks[i].addEventListener('click', function (e) {
+                e.preventDefault()
+
+                //GET THE DATA ATTRIBUTE
+                let page = this.dataset.page
+
+                //ADD HIDDEN SEARCH INPUT TO FORM
+                searchForm.innerHTML += `<input value=${page} name="page" hidden/>`
+
+
+                //SUBMIT FORM
+                searchForm.submit()
+            })
+        }
+    }
+</script>
+
 
 {% endblock %}

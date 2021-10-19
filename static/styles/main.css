@@ -166,7 +166,7 @@ li{
    color: #898888;
    font-size: 18px;
    line-height: 22px;
-   min-width: 150px; 
+   min-width: 150px;
 }
 .groups__title{
    color: #7B85E0;
@@ -266,7 +266,7 @@ li{
    background: #fff;
    padding: 5px;
    border-radius: 50%;
-   
+
 
 }
 .search__form button img{
@@ -330,7 +330,7 @@ li{
    text-align: center;
 }
 .main__table{
-   border-collapse:separate; 
+   border-collapse:separate;
    border-spacing: 1em 1.5em;
 }
 .main__table tr{
@@ -538,7 +538,7 @@ textarea
    box-shadow: none;
    font-size: 12px;
    text-align: start;
-   
+
 }
 .form__menu li + li{
    margin-top: 0;
@@ -584,7 +584,7 @@ textarea
 }
 .tooltip:hover .tooltiptext {
    visibility: visible;
-   
+
 }
 .expence .main__content-item{
    background: #fff;
@@ -640,7 +640,7 @@ textarea
    width: 571px;
    height: 567px;
    margin-left: 25px;
-   
+
 }
 .left{
    width: 480px;
@@ -708,7 +708,7 @@ textarea
    z-index: 100;
    position: absolute;
    left: -55%;
-   top: 20% 
+   top: 20%
 }
 .sign__up-form{
    position: absolute;
