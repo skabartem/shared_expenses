@@ -1,5 +1,5 @@
 from django import forms
-from .models import Expense, GroupUser
+from .models import Group, GroupUser, Expense
 
 
 class ExpenseForm(forms.ModelForm):
@@ -36,3 +36,17 @@ class SettleUpForm(forms.ModelForm):
             'price': 'Gave back',
         }
 
+
+class GroupForm(forms.ModelForm):
+    user_email = forms.EmailField()
+
+    class Meta:
+        model = Group
+        fields = [
+            'name',
+            'user_email',
+        ]
+
+        labels = {
+            'name': 'Group Name',
+        }

@@ -12,7 +12,7 @@ from django.utils.decorators import method_decorator
 from django.db.models import Q
 
 from groups.models import *
-from .forms import ExpenseForm, SettleUpForm
+from .forms import ExpenseForm, SettleUpForm, GroupForm
 from .utils import track_cash_movements
 
 from datetime import datetime
@@ -84,12 +84,8 @@ class GroupDetailView(DetailView):
 @method_decorator(login_required, name='dispatch')
 class GroupCreateView(CreateView):
     model = Group
+    form_class = GroupForm
     template_name = 'groups/create-group.html'
-
-    fields = [
-        'name',
-        'group_users',
-    ]
 
     def form_valid(self, form):
         group = form.save(commit=False)
