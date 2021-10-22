@@ -87,20 +87,28 @@ class GroupCreateView(CreateView):
     form_class = GroupForm
     template_name = 'groups/create-group.html'
 
-    def form_valid(self, form):
-        group = form.save(commit=False)
-        group.created_by = self.request.user.profile
-        group.save()
+    def post(self, request, **kwargs):
+        group_form = GroupForm(request.POST)
+        if group_form.is_valid():
+            group = group_form.save(commit=False)
+            group.created_by = self.request.user.profile
 
-        self.request.session['group_id'] = str(group.id)
+            users_to_create = [group.created_by]
 
-        GroupUser.objects.create(
-            balance=0,
-            group=group,
-            profile=group.created_by,
-        )
+            user_email = group_form.cleaned_data.get('user_email')
+            user_profile = Profile.objects.get(email=user_email)
+            users_to_create.append(user_profile)
 
-        return super().form_valid(form)
+            group.save()
+
+            for user in users_to_create:
+                GroupUser.objects.create(
+                    balance=0,
+                    group=group,
+                    profile=user,
+                )
+
+        return HttpResponseRedirect(reverse('detail', args=[str(group.id)]))
 
     def get_success_url(self):
         group_id = self.request.session.get('group_id')
