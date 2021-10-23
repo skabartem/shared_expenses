@@ -112,7 +112,7 @@ class GroupCreateView(CreateView):
 
     def get_success_url(self):
         group_id = self.request.session.get('group_id')
-        return f'/groups/{group_id}'
+        return f'/group/{group_id}'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -182,7 +182,7 @@ class ExpenseCreateView(CreateView):
 
     def get_success_url(self):
         group_id = self.request.session.get('group_id')
-        return f'/groups/{group_id}'
+        return f'/group/{group_id}'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -263,7 +263,7 @@ class ExpenseUpdateView(UpdateView):
 
     def get_success_url(self):
         group_id = self.request.session.get('group_id')
-        return f'/groups/{group_id}'
+        return f'/group/{group_id}'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -291,7 +291,7 @@ class ExpenseDeleteView(DeleteView):
 
     def get_success_url(self):
         group_id = self.request.session.get('group_id')
-        return f'/groups/{group_id}'
+        return f'/group/{group_id}'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -355,7 +355,7 @@ class SettleUpView(CreateView):
 
     def get_success_url(self):
         group_id = self.request.session.get('group_id')
-        return f'/groups/{group_id}'
+        return f'/group/{group_id}'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

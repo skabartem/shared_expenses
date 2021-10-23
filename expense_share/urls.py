@@ -21,7 +21,7 @@ from users.views import WelcomePage
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('groups/', include('groups.urls')),
+    path('group/', include('groups.urls')),
     path('accounts/', include('users.urls')),
 
     path('', WelcomePage.as_view(), name='welcome'),
