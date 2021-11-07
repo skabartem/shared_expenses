@@ -71,4 +71,5 @@ class ProfileView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['logged_user'] = self.request.user.profile
+        context['group_id'] = self.request.session.get('group_id')
         return context
