@@ -5,18 +5,18 @@
 <section class="editProfile">
         <div class="main__wrapper">
 
-                <form action="" class="form">
+                <form method="POST" class="form">
                     {% csrf_token %}
                     <div class="left__content">
                     <div class="form__title">Edit your profile</div>
                     <div class="form__item">
                         <div class="form__group">
-                            <label for="email">Email</label>
+                            <label id="email">Email</label>
                             {{form.email}}
                         </div>
                         <div class="form__group">
                             {{form.full_name}}
-                            <label for="full_name">Name</label>
+                            <label id="full_name">Name</label>
                         </div>
                     </div>
                     <div class="form__item">
@@ -32,7 +32,7 @@
                     <div class="right__content">
                         <a class="custom-icon exit" href="{% url 'detail' group_id %}" style="background-image: url({% static 'media/x.svg' %});"></a>
                         <div class="expence__img edit_exp" style="background-image: url({% static 'media/soc_media.png' %})"></div>
-                        <button class="custom__btn">Submit</button>
+                        <button type="submit" class="custom__btn">Update</button>
                     </div>
                 </form>
         </div>
