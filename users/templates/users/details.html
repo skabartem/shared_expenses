@@ -40,17 +40,3 @@
     </section>
 
 {% endblock %}
-
-
-<h2>Profile Page</h2>
-<form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-        <div>
-            {{field.label}}
-            {{field}}
-        </div>
-    {% endfor %}
-    <br><br>
-    <button type="submit">Update</button>
-</form>
