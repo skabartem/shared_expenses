@@ -55,3 +55,7 @@ class ProfileForm(forms.ModelForm):
             'email',
             'full_name',
             ]
+
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        return data.lower()
