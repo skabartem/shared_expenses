@@ -9,6 +9,10 @@ class LoginForm(AuthenticationForm):
         model = User
         fields = ['username', 'password']
 
+    def clean_username(self):
+        data = self.cleaned_data['username']
+        return data.lower()
+
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget = forms.TextInput(attrs={'placeholder': 'Username'})
@@ -29,6 +33,14 @@ class SignUpForm(UserCreationForm):
             'username': forms.TextInput(attrs={'placeholder': 'Username'}),
             'email': forms.TextInput(attrs={'placeholder': 'Email Address'}),
         }
+
+    def clean_username(self):
+        data = self.cleaned_data['username']
+        return data.lower()
+
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        return data.lower()
 
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
