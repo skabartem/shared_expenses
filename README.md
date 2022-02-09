@@ -19,7 +19,7 @@ SLASH is a web app built on Django. It's focused on user experience and helps to
 ### Edit Expense
 ![](readme/edit-expense.gif)
 ### Settle-up
-In order to track the spengings and their coverage, all the users can to settle-up user balances. To recycle existing code settle-up form generates new Expense object which corrects the balances.
+In order to track the spengings all the users can settle-up their balances. It is good practice to recycle existing code, so settle-up form generates new a new Expense which offsets balance.
 
 The form is already pre-filled with the next priority: logged user debts -> logged user lendings -> other user transfers -> blank form
 
@@ -27,7 +27,7 @@ The form is already pre-filled with the next priority: logged user debts -> logg
 ---
 
 ### Django specifics
-The whole project is made using Class based views and split in to two apps: users and groups
+The whole project is made using Class based views and split in to two apps: "users" and "groups"
 Users app is taking care of:
 * user registration/login/logout
 * profile creation/update
@@ -41,7 +41,7 @@ Groups app is responsible for:
 ![](readme/SQL_design.png)
 
 ## Processing of an Expense
-When user adds, edits or deletes a group expense, all the group user balances have to be adjusted. This is achieved by CashMovement model (db table) which tracks user balance impact caused by the expense and revert changes to balances in case of an update or deletion.
+When a user adds, edits or deletes a group expense all the group user balances have to be adjusted. This is achieved by CashMovement model (db table) which tracks user balance impact caused by the expense and revert changes to balances in case of an update or deletion.
 
 Along with the balance changes, MoneyTransfers have to do be recalculated. This is being managed by the below logic:
 ```
